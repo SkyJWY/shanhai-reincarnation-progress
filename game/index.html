@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta
       name="viewport"
-      content="width=device-width,initial-scale=1,user-scalable=no"
+      content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"
     />
     <title>山海轮回 · 雾隐试炼</title>
     <link rel="stylesheet" href="style.css" />
@@ -13,7 +13,7 @@
     <canvas id="world"></canvas>
     <header>
       <div>
-        <small>山海轮回 / COMBAT PROTOTYPE 0.1</small>
+        <small>山海轮回 / COMBAT PROTOTYPE 0.2</small>
         <h1>雾隐试炼</h1>
         <p>竹影深处，试剑问道。</p>
       </div>
@@ -36,7 +36,17 @@
       >
     </footer>
     <div id="stick"><b></b></div>
-    <button id="attack">普攻</button>
+    <button id="attack"><span>剑</span>普攻</button>
+    <div id="cancelCast" aria-live="polite">拖入取消</div>
+    <button id="pauseGame" aria-label="暂停游戏">Ⅱ</button>
+    <div id="rotateHint">
+      <div>
+        <div class="phone-icon">▯ ↻</div>
+        <h2>横屏，开启试炼</h2>
+        <p>请将手机横向握持<br />左手移动 · 右手施法</p>
+        <small>竖屏期间战斗与冷却已冻结</small>
+      </div>
+    </div>
     <dialog id="modal">
       <h2 id="modalTitle">试炼结束</h2>
       <p id="result"></p>

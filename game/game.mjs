@@ -19,6 +19,24 @@ let W,
   joy = { x: 0, y: 0 },
   attackCd = 0,
   invulnerable = 0;
+const touch = matchMedia("(pointer: coarse)");
+let orientationBlocked = false,
+  cancelArmed = false,
+  skillPointer = null;
+function clearAim() {
+  selected = -1;
+  cancelArmed = false;
+  skillPointer = null;
+  document.body.classList.remove("aiming", "cancel-armed");
+}
+function syncOrientation() {
+  orientationBlocked = touch.matches && innerHeight > innerWidth;
+  document.body.classList.toggle("portrait-blocked", orientationBlocked);
+  clearAim();
+  keys.clear();
+  joy = { x: 0, y: 0 };
+  if ($("stick")) $("stick").firstElementChild.style.transform = "none";
+}
 const decor = Array.from({ length: 80 }, (_, i) => ({
   x: Math.sin(i * 42.3) * 20,
   y: Math.cos(i * 17.7) * 20,
@@ -31,18 +49,21 @@ function resize() {
   canvas.width = W * d;
   canvas.height = H * d;
   ctx.setTransform(d, 0, 0, d, 0, 0);
-  scale = Math.max(13, Math.min(W / 36, H / 24));
+  scale = touch.matches
+    ? clamp(H / 11, 30, 46)
+    : clamp(Math.min(W / 24, H / 16), 32, 64);
+  syncOrientation();
 }
 addEventListener("resize", resize);
 resize();
 const project = (x, y, z = 0) => ({
-  x: W / 2 + (x - y) * scale,
-  y: H * 0.48 + (x + y) * scale * 0.52 - z,
+  x: W / 2 + (x - (p?.x || 0) - y + (p?.y || 0)) * scale,
+  y: H * 0.5 + (x - (p?.x || 0) + y - (p?.y || 0)) * scale * 0.52 - z,
 });
 function unproject(x, y) {
   const a = (x - W / 2) / scale,
-    b = (y - H * 0.48) / (scale * 0.52);
-  return { x: (a + b) / 2, y: (b - a) / 2 };
+    b = (y - H * 0.5) / (scale * 0.52);
+  return { x: (p?.x || 0) + (a + b) / 2, y: (p?.y || 0) + (b - a) / 2 };
 }
 function path(points, fill, stroke) {
   ctx.beginPath();
@@ -137,7 +158,7 @@ function reset() {
   wave = 0;
   attackCd = 0;
   invulnerable = 1;
-  selected = -1;
+  clearAim();
   paused = false;
   keys.clear();
   joy = { x: 0, y: 0 };
@@ -150,7 +171,7 @@ function hurt(e, n) {
   if (e.hp <= 0) kills++;
 }
 function cast(i) {
-  if (paused || p.hp <= 0) return;
+  if (paused || orientationBlocked || p.hp <= 0) return;
   const s = skills[i];
   if (cd[i] > 0) {
     notice(`${s.name}尚在冷却`);
@@ -187,7 +208,7 @@ function cast(i) {
   notice(`${s.name} · 已释放`);
 }
 function attack() {
-  if (paused || p.hp <= 0 || attackCd > 0) return;
+  if (paused || orientationBlocked || p.hp <= 0 || attackCd > 0) return;
   attackCd = 0.42;
   const s = {
     type: "cone",
@@ -208,10 +229,10 @@ function attack() {
   });
 }
 function pause() {
-  if (p.hp <= 0) return;
+  if (p.hp <= 0 || orientationBlocked) return;
   paused = !paused;
   keys.clear();
-  selected = -1;
+  clearAim();
   joy = { x: 0, y: 0 };
   if (paused) {
     $("modalTitle").textContent = "歇剑片刻";
@@ -226,8 +247,16 @@ skills.forEach((s, i) => {
   b.setAttribute("aria-label", s.name);
   b.addEventListener("pointerdown", (e) => {
     e.preventDefault();
-    if (paused) return;
+    if (paused || orientationBlocked || skillPointer !== null) return;
+    if (cd[i] > 0) {
+      notice(`${s.name}尚在冷却`);
+      return;
+    }
     selected = i;
+    skillPointer = e.pointerId;
+    cancelArmed = false;
+    document.body.classList.add("aiming");
+    notice("拖动瞄准 · 移入右上取消区后松手取消");
     b.setPointerCapture(e.pointerId);
     b.dataset.x = e.clientX;
     b.dataset.y = e.clientY;
@@ -236,21 +265,41 @@ skills.forEach((s, i) => {
       .sort((a, b) => distance(p, a) - distance(p, b))[0];
     aim = nearest ? { ...nearest } : { x: p.x + 5, y: p.y };
   });
-  b.addEventListener("pointermove", (e) => {
-    if (selected !== i || !b.hasPointerCapture(e.pointerId)) return;
+  function updateAim(e) {
+    const r = $("cancelCast").getBoundingClientRect();
+    cancelArmed =
+      e.clientX >= r.left &&
+      e.clientX <= r.right &&
+      e.clientY >= r.top &&
+      e.clientY <= r.bottom;
+    document.body.classList.toggle("cancel-armed", cancelArmed);
+    $("cancelCast").textContent = cancelArmed ? "松手取消" : "拖入取消";
     const dx = e.clientX - Number(b.dataset.x),
       dy = e.clientY - Number(b.dataset.y);
-    if (Math.hypot(dx, dy) > 8) {
-      const a = dx / scale,
-        b = dy / (scale * 0.52);
-      aim = { x: p.x + (a + b) / 2, y: p.y + (b - a) / 2 };
+    if (Math.hypot(dx, dy) > 8 && !cancelArmed) {
+      const vx = dx + dy / 0.52,
+        vy = dy / 0.52 - dx;
+      const length = Math.hypot(vx, vy);
+      const reach = s.range * Math.min(1, Math.hypot(dx, dy) / 72);
+      aim = { x: p.x + (vx / length) * reach, y: p.y + (vy / length) * reach };
     }
+  }
+  b.addEventListener("pointermove", (e) => {
+    if (selected === i && skillPointer === e.pointerId) updateAim(e);
   });
-  b.addEventListener("pointerup", () => {
-    if (selected === i) cast(i);
-    selected = -1;
+  b.addEventListener("pointerup", (e) => {
+    if (skillPointer !== e.pointerId) return;
+    updateAim(e);
+    if (selected === i && !cancelArmed) cast(i);
+    else notice("已取消施法 · 不消耗冷却");
+    clearAim();
   });
-  b.addEventListener("pointercancel", () => (selected = -1));
+  b.addEventListener("pointercancel", (e) => {
+    if (skillPointer === e.pointerId) clearAim();
+  });
+  b.addEventListener("lostpointercapture", (e) => {
+    if (skillPointer === e.pointerId) clearAim();
+  });
   $("skills").append(b);
 });
 canvas.addEventListener("pointermove", (e) => {
@@ -259,7 +308,10 @@ canvas.addEventListener("pointermove", (e) => {
 canvas.addEventListener("pointerdown", (e) => {
   aim = unproject(e.clientX, e.clientY);
   if (e.button === 0) attack();
-  else selected = -1;
+  else {
+    clearAim();
+    notice("已取消施法");
+  }
 });
 canvas.addEventListener("contextmenu", (e) => e.preventDefault());
 addEventListener("keydown", (e) => {
@@ -268,12 +320,20 @@ addEventListener("keydown", (e) => {
     e.preventDefault();
   if (e.repeat) return;
   if (k === "escape") {
+    if (selected >= 0) {
+      clearAim();
+      notice("已取消施法");
+      return;
+    }
     pause();
     return;
   }
   keys.add(k);
   const i = skills.findIndex((s) => s.key === k);
-  if (i >= 0 && !paused) selected = i;
+  if (i >= 0 && !paused && !orientationBlocked) {
+    selected = i;
+    cancelArmed = false;
+  }
 });
 addEventListener("keyup", (e) => {
   const k = e.key.toLowerCase();
@@ -292,6 +352,7 @@ $("modal").addEventListener("cancel", (e) => {
   if (p.hp > 0) pause();
 });
 $("resume").onclick = pause;
+$("pauseGame").onclick = pause;
 $("restart").onclick = reset;
 $("attack").onpointerdown = (e) => {
   e.preventDefault();
@@ -304,13 +365,14 @@ $("attack").onpointerdown = (e) => {
 const stick = $("stick");
 function moveStick(e) {
   const r = stick.getBoundingClientRect(),
-    x = (e.clientX - r.left - 50) / 40,
-    y = (e.clientY - r.top - 50) / 40,
+    x = (e.clientX - r.left - r.width / 2) / (r.width * 0.32),
+    y = (e.clientY - r.top - r.height / 2) / (r.height * 0.32),
     d = Math.max(1, Math.hypot(x, y));
   joy = { x: x / d, y: y / d };
   stick.firstElementChild.style.transform = `translate(${joy.x * 30}px,${joy.y * 30}px)`;
 }
 stick.onpointerdown = (e) => {
+  if (paused || orientationBlocked) return;
   stick.setPointerCapture(e.pointerId);
   moveStick(e);
 };
@@ -322,7 +384,7 @@ stick.onpointerup = stick.onpointercancel = () => {
   stick.firstElementChild.style.transform = "none";
 };
 function update(dt) {
-  if (paused) return;
+  if (paused || orientationBlocked) return;
   time += dt;
   attackCd = Math.max(0, attackCd - dt);
   invulnerable = Math.max(0, invulnerable - dt);
@@ -389,7 +451,7 @@ function update(dt) {
   if (!enemies.length) spawn();
   if (p.hp <= 0) {
     paused = true;
-    selected = -1;
+    clearAim();
     $("modalTitle").textContent = "此番试炼，暂告一段";
     $("result").textContent =
       `击败 ${kills} 个妖影，抵达第 ${wave} 波。原型不计正式轮回。`;
@@ -399,7 +461,7 @@ function update(dt) {
 }
 function actor(o, hero) {
   const q = project(o.x, o.y),
-    s = scale / 24;
+    s = scale / 22;
   ctx.save();
   ctx.translate(q.x, q.y);
   ctx.scale(s, s);
@@ -503,8 +565,11 @@ function draw() {
       circle(e.mark, 1.65 * (1 - e.wind / 0.8), "#eb796b44");
     }
   if (selected >= 0) {
-    circle(p, skills[selected].range, null, "#c5dfc366");
-    shape(skills[selected], p, aim, 0.45);
+    const preview = cancelArmed
+      ? { ...skills[selected], color: "#ef7777" }
+      : skills[selected];
+    circle(p, preview.range, null, cancelArmed ? "#ef777799" : "#c5dfc399");
+    shape(preview, p, aim, 0.45);
   }
   for (const f of fx) {
     if (f.kind === "spell")
@@ -542,6 +607,10 @@ window.gameDebug = () => ({
   cooldowns: [...cd],
   enemies: enemies.map((e) => ({ x: e.x, y: e.y, hp: e.hp })),
   selected,
+  cancelArmed,
+  orientationBlocked,
+  scale,
+  heroScreen: project(p.x, p.y),
 });
 reset();
 let last = performance.now();

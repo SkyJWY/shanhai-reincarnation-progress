@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 body {
   margin: 0;
@@ -7,6 +8,9 @@ body {
   color: #f0ead5;
   font: 14px system-ui;
   overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  overscroll-behavior: none;
 }
 canvas {
   display: block;
@@ -16,9 +20,9 @@ canvas {
 }
 header {
   position: absolute;
-  top: 28px;
-  left: 32px;
-  right: 32px;
+  top: 24px;
+  left: 28px;
+  right: 28px;
   display: flex;
   justify-content: space-between;
   pointer-events: none;
@@ -45,14 +49,15 @@ a {
 aside {
   position: absolute;
   top: 150px;
-  left: 32px;
+  left: 28px;
   width: 220px;
   color: #d4dfcb;
+  pointer-events: none;
 }
 .bar {
   background: #182c28;
   border: 1px solid #8ba58c;
-  height: 9px;
+  height: 10px;
   margin: 10px 0;
 }
 .bar i {
@@ -63,7 +68,7 @@ aside {
 }
 footer {
   position: absolute;
-  bottom: 20px;
+  bottom: 18px;
   width: 100%;
   text-align: center;
   pointer-events: none;
@@ -78,9 +83,9 @@ footer small {
 }
 #skills {
   display: flex;
-  gap: 9px;
+  gap: 12px;
   justify-content: center;
-  pointer-events: auto;
+  pointer-events: none;
 }
 button {
   font: inherit;
@@ -93,19 +98,28 @@ button {
   touch-action: none;
 }
 #skills button {
-  width: 78px;
-  height: 70px;
+  width: 88px;
+  height: 82px;
   position: relative;
-  background: #19362ef0;
-  box-shadow: 0 4px 12px #0004;
+  background: radial-gradient(circle at 35% 25%, #42695b, #132f2a);
+  box-shadow:
+    0 4px 12px #0005,
+    inset 0 0 0 3px #c8bd8233;
+  pointer-events: auto;
+  border: 2px solid #a2b58b;
 }
 #skills button:nth-child(5) {
-  margin-left: 18px;
+  margin-left: 22px;
+  border-color: #9aacae;
+}
+#skills button:nth-child(6) {
+  border-color: #9aacae;
 }
 #skills b {
   display: block;
-  color: #d9bf7e;
-  margin-bottom: 5px;
+  color: #ead097;
+  font-size: 20px;
+  margin-bottom: 4px;
 }
 #skills em {
   position: absolute;
@@ -113,19 +127,22 @@ button {
   display: grid;
   place-items: center;
   background: #102922e8;
-  font-size: 23px;
+  font-size: 25px;
   font-style: normal;
-  border-radius: 8px;
+  border-radius: inherit;
 }
 #skills em:empty {
   display: none;
 }
 #skills .selected {
-  border: 2px solid #e1d3a0;
+  border-color: #f8e3a1;
+  box-shadow:
+    0 0 0 6px #f5dda433,
+    0 0 28px #b6e3c077;
 }
 #toast {
   position: absolute;
-  top: 28px;
+  top: 24px;
   left: 50%;
   transform: translateX(-50%);
   color: #e6d5a8;
@@ -133,7 +150,7 @@ button {
   padding: 9px 18px;
   border-radius: 20px;
   white-space: nowrap;
-  font-size: 12px;
+  font-size: 13px;
   pointer-events: none;
 }
 dialog {
@@ -141,8 +158,9 @@ dialog {
   color: #eee4c9;
   border: 1px solid #839b80;
   border-radius: 16px;
-  padding: 32px;
+  padding: 28px;
   min-width: 280px;
+  max-width: 90vw;
   text-align: center;
 }
 dialog::backdrop {
@@ -152,93 +170,264 @@ dialog button {
   margin: 8px;
 }
 #stick,
-#attack {
+#attack,
+#rotateHint {
   display: none;
 }
-@media (pointer: coarse) {
-  #stick {
-    display: block;
-    position: absolute;
-    left: 22px;
-    bottom: 100px;
-    width: 100px;
-    height: 100px;
-    border: 1px solid #b6ceb76b;
-    border-radius: 50%;
-    background: #122d2944;
-    touch-action: none;
-  }
-  #stick b {
-    position: absolute;
-    left: 34px;
-    top: 34px;
-    width: 30px;
-    height: 30px;
-    background: #bbd0b477;
-    border-radius: 50%;
-  }
-  #attack {
-    display: block;
-    position: absolute;
-    right: 22px;
-    bottom: 190px;
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-  }
-  footer p {
-    display: none;
-  }
-  #skills {
-    justify-content: flex-end;
-    padding-right: 18px;
-    gap: 5px;
-  }
-  #skills button {
-    width: 48px;
-    height: 57px;
-    font-size: 11px;
-  }
-  #skills button:nth-child(5) {
-    margin-left: 6px;
-  }
-  #toast {
-    top: auto;
-    bottom: 260px;
-    max-width: 95%;
-    white-space: normal;
-    text-align: center;
-  }
+#cancelCast {
+  position: absolute;
+  right: 34px;
+  top: 80px;
+  width: 90px;
+  height: 90px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 2px dashed #d9bba1;
+  background: #463433bb;
+  color: #ffdbce;
+  pointer-events: none;
+  z-index: 5;
 }
-@media (max-width: 600px) {
+.aiming #cancelCast {
+  display: flex;
+}
+.cancel-armed #cancelCast {
+  background: #a63838dd;
+  border-style: solid;
+  border-color: #ffad9f;
+  box-shadow: 0 0 0 8px #ff878733;
+}
+.cancel-armed #skills .selected {
+  border-color: #ff8f8f;
+}
+#pauseGame {
+  position: absolute;
+  right: 28px;
+  top: 55px;
+  width: 42px;
+  height: 42px;
+}
+#rotateHint {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, #30574b, #102822 75%);
+  z-index: 50;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+}
+.portrait-blocked #rotateHint {
+  display: flex;
+}
+.phone-icon {
+  font-size: 68px;
+  color: #dcc18b;
+}
+#rotateHint h2 {
+  font: 28px serif;
+  letter-spacing: 4px;
+}
+#rotateHint p {
+  color: #bdcdbb;
+  line-height: 2;
+}
+#rotateHint small {
+  color: #a4b39e;
+}
+@media (pointer: coarse) {
+  :root {
+    --edge: max(18px, env(safe-area-inset-right));
+    --left: max(24px, env(safe-area-inset-left));
+    --unit: clamp(58px, 17dvh, 78px);
+  }
   header {
-    top: 18px;
-    left: 18px;
-    right: 18px;
+    top: 10px;
+    left: var(--left);
+    right: calc(var(--edge) + 48px);
   }
   header small {
-    font-size: 8px;
+    font-size: 9px;
     letter-spacing: 1px;
   }
-  h1 {
-    font-size: 26px;
+  header h1 {
+    font-size: 22px;
+    margin: 3px 0;
+    letter-spacing: 5px;
   }
-  aside {
-    left: 18px;
-    top: 125px;
-    width: 180px;
+  header p {
+    display: none;
   }
   header a {
     font-size: 12px;
   }
-  footer small {
-    display: block;
-    padding: 0 12px;
+  aside {
+    left: var(--left);
+    top: 65px;
+    width: 170px;
+    font-size: 12px;
   }
-  #skills button {
-    width: 45px;
+  .bar {
+    height: 8px;
+    margin: 5px 0;
+  }
+  #stats {
+    font-size: 11px;
+  }
+  #pauseGame {
+    right: var(--edge);
+    top: 10px;
+    width: 36px;
+    height: 36px;
+    padding: 4px;
+  }
+  #toast {
+    top: 12px;
+    font-size: 12px;
+    padding: 7px 12px;
+    max-width: 45vw;
+    white-space: normal;
+    text-align: center;
+  }
+  #stick {
+    display: block;
+    position: absolute;
+    left: calc(var(--left) + 10px);
+    bottom: 30px;
+    width: clamp(116px, 34dvh, 152px);
+    height: clamp(116px, 34dvh, 152px);
+    border: 2px solid #c0d6b766;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      #b5caa911 46%,
+      #8faf9333 47%,
+      #17342b66 50%
+    );
+    box-shadow: inset 0 0 0 10px #0d241c33;
+    touch-action: none;
+  }
+  #stick b {
+    position: absolute;
+    left: calc(50% - 25px);
+    top: calc(50% - 25px);
+    width: 50px;
+    height: 50px;
+    border: 2px solid #d9d6ac99;
+    background: radial-gradient(circle at 35% 25%, #b3c2a2aa, #476453dd);
+    box-shadow: 0 4px 14px #0005;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  #attack {
+    display: flex;
+    position: absolute;
+    right: calc(var(--edge) + 10px);
+    bottom: 24px;
+    width: calc(var(--unit) * 1.4);
+    height: calc(var(--unit) * 1.4);
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2px;
+    background: radial-gradient(circle at 35% 25%, #657d61, #243f35);
+    border: 3px solid #d6bd7c;
+    box-shadow:
+      inset 0 0 0 5px #d4bb7330,
+      0 5px 18px #071c17aa;
+    font-size: 14px;
+  }
+  #attack span {
+    font: 30px serif;
+    color: #f1d9a1;
+  }
+  footer {
+    position: static;
+  }
+  footer p,
+  footer small {
+    display: none;
   }
   #skills {
-    gap: 4px;
+    display: contents;
+  }
+  #skills button {
+    position: absolute;
+    width: var(--unit);
+    height: var(--unit);
+    border-radius: 50%;
+    font-size: 12px;
+    padding: 3px;
+    margin: 0 !important;
+  }
+  #skills b {
+    font-size: 18px;
+    margin-bottom: 1px;
+  }
+  #skills button:nth-child(1) {
+    right: calc(var(--edge) + var(--unit) * 1.65);
+    bottom: 20px;
+  }
+  #skills button:nth-child(2) {
+    right: calc(var(--edge) + var(--unit) * 2.05);
+    bottom: calc(28px + var(--unit));
+  }
+  #skills button:nth-child(3) {
+    right: calc(var(--edge) + var(--unit) * 1.3);
+    bottom: calc(35px + var(--unit) * 2);
+  }
+  #skills button:nth-child(4) {
+    right: var(--edge);
+    bottom: calc(35px + var(--unit) * 1.65);
+  }
+  #skills button:nth-child(5),
+  #skills button:nth-child(6) {
+    width: 58px;
+    height: 58px;
+    bottom: 22px;
+    font-size: 11px;
+    border-color: #88a9b4;
+    background: radial-gradient(circle at 35% 25%, #3c6066, #18332f);
+  }
+  #skills button:nth-child(5) {
+    left: calc(50% - 68px);
+  }
+  #skills button:nth-child(6) {
+    left: calc(50% + 2px);
+  }
+  #skills button:nth-child(5) b,
+  #skills button:nth-child(6) b {
+    font-size: 16px;
+  }
+  #cancelCast {
+    right: var(--edge);
+    top: 58px;
+    width: 76px;
+    height: 76px;
+    font-size: 13px;
+  }
+}
+@media (pointer: coarse) and (max-height: 360px) {
+  :root {
+    --unit: 54px;
+  }
+  #skills button:nth-child(5),
+  #skills button:nth-child(6) {
+    width: 50px;
+    height: 50px;
+  }
+  #cancelCast {
+    width: 65px;
+    height: 65px;
+    top: 52px;
+  }
+  #stick {
+    bottom: 24px;
+  }
+  aside {
+    top: 56px;
   }
 }
