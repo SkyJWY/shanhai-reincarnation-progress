@@ -1,4 +1,7 @@
 import { skills, clamp, distance, target, hits } from "./rules.mjs";
+import { PC_KEYS, createPCControls } from "./pc-controls.mjs";
+const camera = { x: 0, y: 0, locked: true };
+let pc = null;
 const $ = (id) => document.getElementById(id),
   canvas = $("world"),
   ctx = canvas.getContext("2d");
@@ -15,7 +18,6 @@ let W,
   paused = false,
   selected = -1,
   aim = { x: 4, y: 0 },
-  keys = new Set(),
   joy = { x: 0, y: 0 },
   attackCd = 0,
   invulnerable = 0;
@@ -33,7 +35,7 @@ function syncOrientation() {
   orientationBlocked = touch.matches && innerHeight > innerWidth;
   document.body.classList.toggle("portrait-blocked", orientationBlocked);
   clearAim();
-  keys.clear();
+  pc?.reset();
   joy = { x: 0, y: 0 };
   if ($("stick")) $("stick").firstElementChild.style.transform = "none";
 }
@@ -57,13 +59,30 @@ function resize() {
 addEventListener("resize", resize);
 resize();
 const project = (x, y, z = 0) => ({
-  x: W / 2 + (x - (p?.x || 0) - y + (p?.y || 0)) * scale,
-  y: H * 0.5 + (x - (p?.x || 0) + y - (p?.y || 0)) * scale * 0.52 - z,
+  x:
+    W / 2 +
+    (x -
+      (touch.matches ? p?.x || 0 : camera.x) -
+      y +
+      (touch.matches ? p?.y || 0 : camera.y)) *
+      scale,
+  y:
+    H * 0.5 +
+    (x -
+      (touch.matches ? p?.x || 0 : camera.x) +
+      y -
+      (touch.matches ? p?.y || 0 : camera.y)) *
+      scale *
+      0.52 -
+    z,
 });
 function unproject(x, y) {
   const a = (x - W / 2) / scale,
     b = (y - H * 0.5) / (scale * 0.52);
-  return { x: (p?.x || 0) + (a + b) / 2, y: (p?.y || 0) + (b - a) / 2 };
+  return {
+    x: (touch.matches ? p?.x || 0 : camera.x) + (a + b) / 2,
+    y: (touch.matches ? p?.y || 0 : camera.y) + (b - a) / 2,
+  };
 }
 function path(points, fill, stroke) {
   ctx.beginPath();
@@ -150,6 +169,8 @@ function spawn() {
 }
 function reset() {
   p = { x: 0, y: 0, hp: 100 };
+  camera.x = 0;
+  camera.y = 0;
   enemies = [];
   fx = [];
   cd = skills.map(() => 0);
@@ -160,7 +181,7 @@ function reset() {
   invulnerable = 1;
   clearAim();
   paused = false;
-  keys.clear();
+  pc?.reset();
   joy = { x: 0, y: 0 };
   $("modal").close();
   spawn();
@@ -231,7 +252,7 @@ function attack() {
 function pause() {
   if (p.hp <= 0 || orientationBlocked) return;
   paused = !paused;
-  keys.clear();
+  pc?.reset();
   clearAim();
   joy = { x: 0, y: 0 };
   if (paused) {
@@ -243,10 +264,14 @@ function pause() {
 }
 skills.forEach((s, i) => {
   const b = document.createElement("button");
-  b.innerHTML = `<b>${s.key.toUpperCase()}</b>${s.name}<em></em>`;
+  b.innerHTML = `<b>${(touch.matches ? s.key : PC_KEYS[i]).toUpperCase()}</b>${s.name}<em></em>`;
   b.setAttribute("aria-label", s.name);
   b.addEventListener("pointerdown", (e) => {
     e.preventDefault();
+    if (!touch.matches) {
+      pc.selectSkill(i);
+      return;
+    }
     if (paused || orientationBlocked || skillPointer !== null) return;
     if (cd[i] > 0) {
       notice(`${s.name}尚在冷却`);
@@ -302,48 +327,42 @@ skills.forEach((s, i) => {
   });
   $("skills").append(b);
 });
+pc = createPCControls({
+  canvas,
+  touch,
+  skills,
+  camera,
+  project,
+  unproject,
+  player: () => p,
+  enemies: () => enemies,
+  cooldowns: () => cd,
+  blocked: () => paused || orientationBlocked || p.hp <= 0,
+  actorHeight: () => (48 * scale) / 22,
+  selected: () => selected,
+  select: (i) => {
+    selected = i;
+  },
+  clearAim,
+  aim: (point) => {
+    aim = point;
+  },
+  cast,
+  attack,
+  pause,
+  notice,
+  quickCast: () => $("quickCast").checked,
+});
 canvas.addEventListener("pointermove", (e) => {
-  aim = unproject(e.clientX, e.clientY);
+  if (touch.matches) aim = unproject(e.clientX, e.clientY);
 });
 canvas.addEventListener("pointerdown", (e) => {
-  aim = unproject(e.clientX, e.clientY);
-  if (e.button === 0) attack();
-  else {
-    clearAim();
-    notice("已取消施法");
+  if (touch.matches) {
+    aim = unproject(e.clientX, e.clientY);
+    if (e.button === 0) attack();
   }
 });
 canvas.addEventListener("contextmenu", (e) => e.preventDefault());
-addEventListener("keydown", (e) => {
-  const k = e.key.toLowerCase();
-  if (["1", "2", "3", "4", "f", "g", "w", "a", "s", "d", "escape"].includes(k))
-    e.preventDefault();
-  if (e.repeat) return;
-  if (k === "escape") {
-    if (selected >= 0) {
-      clearAim();
-      notice("已取消施法");
-      return;
-    }
-    pause();
-    return;
-  }
-  keys.add(k);
-  const i = skills.findIndex((s) => s.key === k);
-  if (i >= 0 && !paused && !orientationBlocked) {
-    selected = i;
-    cancelArmed = false;
-  }
-});
-addEventListener("keyup", (e) => {
-  const k = e.key.toLowerCase();
-  keys.delete(k);
-  const i = skills.findIndex((s) => s.key === k);
-  if (i >= 0 && selected === i) {
-    cast(i);
-    selected = -1;
-  }
-});
 addEventListener("blur", () => {
   if (!paused && p?.hp > 0) pause();
 });
@@ -389,8 +408,9 @@ function update(dt) {
   attackCd = Math.max(0, attackCd - dt);
   invulnerable = Math.max(0, invulnerable - dt);
   cd = cd.map((v) => Math.max(0, v - dt));
-  let sx = (keys.has("d") ? 1 : 0) - (keys.has("a") ? 1 : 0) + joy.x,
-    sy = (keys.has("s") ? 1 : 0) - (keys.has("w") ? 1 : 0) + joy.y;
+  pc.update(dt);
+  let sx = joy.x,
+    sy = joy.y;
   let vx = sx + sy,
     vy = sy - sx,
     d = Math.hypot(vx, vy);
@@ -564,6 +584,11 @@ function draw() {
       circle(e.mark, 1.65, "#eb796b33", "#f99e89");
       circle(e.mark, 1.65 * (1 - e.wind / 0.8), "#eb796b44");
     }
+  if (!touch.matches) {
+    if (pc.state.marker) circle(pc.state.marker, 0.35, null, "#b4e69c");
+    if (pc.state.inspected) circle(pc.state.inspected, 0.65, null, "#ffc078");
+    if (pc.state.preparingAttack) circle(p, 2.7, null, "#e7cf8d");
+  }
   if (selected >= 0) {
     const preview = cancelArmed
       ? { ...skills[selected], color: "#ef7777" }
@@ -607,6 +632,22 @@ window.gameDebug = () => ({
   cooldowns: [...cd],
   enemies: enemies.map((e) => ({ x: e.x, y: e.y, hp: e.hp })),
   selected,
+  pc: pc
+    ? {
+        move: pc.state.move,
+        target: pc.state.target
+          ? {
+              x: pc.state.target.x,
+              y: pc.state.target.y,
+              hp: pc.state.target.hp,
+            }
+          : null,
+        attackMove: pc.state.attackMove,
+        preparingAttack: pc.state.preparingAttack,
+        hold: pc.state.hold,
+      }
+    : null,
+  camera: { ...camera },
   cancelArmed,
   orientationBlocked,
   scale,

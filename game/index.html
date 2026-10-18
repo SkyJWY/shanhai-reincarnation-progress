@@ -13,7 +13,7 @@
     <canvas id="world"></canvas>
     <header>
       <div>
-        <small>山海轮回 / COMBAT PROTOTYPE 0.2.1</small>
+        <small>山海轮回 / COMBAT PROTOTYPE 0.3</small>
         <h1>雾隐试炼</h1>
         <p>竹影深处，试剑问道。</p>
       </div>
@@ -24,11 +24,16 @@
       <div class="bar"><i id="health"></i></div>
       <span id="stats"></span>
     </aside>
-    <div id="toast">按住技能键瞄准，松开释放；右键取消</div>
+    <div id="toast">右键移动或攻击 · QWER 技能 · DF 通用技能</div>
     <footer>
+      <label id="castSetting"
+        ><input id="quickCast" type="checkbox" />
+        快捷施法（按键立即释放）</label
+      >
       <div id="skills"></div>
       <p>
-        WASD 移动 · 鼠标瞄准 · 左键普攻 · 1–4 装备技能 · F/G 通用技能 · Esc 暂停
+        右键移动 / 攻击 · QWER 技能 · DF 通用 · A 攻击移动 · S 停止 · H 待命 · Y
+        镜头锁定 · 空格回到角色
       </p>
       <small
         >规则生成战斗原型 · 无实时 AI / 装备养成 / 轮回存档 ·
