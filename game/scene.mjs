@@ -1,4 +1,5 @@
 import * as THREE from './vendor/three.module.js';
+import {createCharacter} from './character.mjs';
 // All scenery below is actual geometry: no painted backdrop or image replacement.
 const $=id=>document.getElementById(id), scene=new THREE.Scene();
 let renderer;
@@ -102,23 +103,8 @@ for(let i=0;i<600;i++){const x=range(-10.5,10.5),z=range(-8.5,8.5);if((x+3)**2/3
 // Stone lanterns, offerings and small foreground rocks.
 for(const [x,z] of [[2.5,1],[-2.5,-.7],[5,6.3],[-8,2]]){box([x,.12,z],[.6,.24,.6],C.stone);cyl([x,.65,z],.13,1.1,C.stone);box([x,1.28,z],[.53,.45,.53],C.stone);box([x,1.3,z+.27],[.25,.27,.015],lanternGlass);roof(x,1.58,z,.45,.45,.3);}
 for(const [x,z] of [[-4,8],[7,7.5],[-9,1],[8,-7]]){const r=mesh(unitRock,mat('#8b9b82'),[x,.27,z],[.9,.6,.65]);r.rotation.y=random()*6;bush(x+.3,z+.2,.45,'#6b8f58',.28);}
-// A fully modeled traveler, with separate robe, limbs, hair, blade and fittings.
-const hero=new THREE.Group();scene.add(hero);hero.position.set(-2.6,arch(-2.6)+.12,4.3);hero.rotation.y=.45;
-for(const x of [-.12,.12]){box([x,.13,.02],[.16,.22,.29],C.ink,hero);cyl([x,.29,0],.08,.25,mat('#d7cdb2'),hero);}
-const skirt=mesh(new THREE.CylinderGeometry(.21,.38,.65,12),mat('#397d79'),[0,.59,0],[1,1,.8],hero);
-mesh(new THREE.CylinderGeometry(.28,.22,.43,12),mat('#5e9b8c'),[0,1.02,0],[1,1,.73],hero);
-box([0,.91,.02],[.5,.08,.37],C.gold,hero);ball([0,.91,.22],[.07,.055,.03],mat('#dfc087',.3,.55),hero);
-for(const sign of [-1,1]){const lapel=box([sign*.07,1.13,.18],[.09,.35,.035],C.ivory,hero);lapel.rotation.z=sign*.35;rod([sign*.24,1.15,0],[sign*.39,.88,.07],.10,mat('#558e80'),hero);ball([sign*.39,.84,.08],[.075,.09,.075],C.skin,hero);}
-for(let i=-2;i<=2;i++)rod([i*.09,.3,.25],[i*.055,.84,.19],.009,mat('#99b7a0'),hero);
-ball([0,1.44,0],[.24,.28,.22],C.skin,hero);
-const hair=mesh(new THREE.SphereGeometry(1,16,10,0,Math.PI*2,0,Math.PI*.48),mat(C.ink),[0,1.5,-.015],[.25,.27,.235],hero);
-for(const x of [-.23,.23]){ball([x,1.34,-.06],[.055,.24,.07],C.ink,hero);ball([x*.32,1.46,.202],[.023,.029,.014],C.ink,hero);}
-ball([0,1.38,.224],[.024,.027,.025],C.skin,hero);rod([-.035,1.32,.208],[.035,1.32,.208],.009,mat('#a76e5c'),hero);
-ball([0,1.77,-.03],[.115,.12,.105],C.ink,hero);rod([-.17,1.76,-.03],[.17,1.78,-.03],.018,C.gold,hero);ball([-.16,1.77,-.03],[.04,.045,.04],mat('#82baa5'),hero);
-rod([0,1.64,-.17],[.03,1.18,-.21],.065,C.ink,hero);
-const swordShape=new THREE.Shape();swordShape.moveTo(-.04,0);swordShape.lineTo(.04,0);swordShape.lineTo(.05,.83);swordShape.lineTo(0,1.03);swordShape.lineTo(-.05,.83);swordShape.closePath();
-mesh(new THREE.ExtrudeGeometry(swordShape,{depth:.025,bevelEnabled:true,bevelSize:.009,bevelThickness:.008,bevelSegments:1,steps:1}),mat('#d9ece6',.2,.8),[.41,.92,.07],[1,1,1],hero);box([.41,.92,.075],[.26,.05,.07],C.gold,hero);rod([.41,.76,.08],[.41,.94,.08],.028,C.red,hero);
-const sash=box([.13,.56,.29],[.075,.65,.022],C.red,hero);sash.rotation.z=-.1;
+// Shared detailed character asset; the accepted environment remains unchanged.
+const character=createCharacter(THREE),hero=character.group;scene.add(hero);hero.position.set(-2.6,arch(-2.6)+.12,4.3);hero.rotation.y=.45;character.update(0);
 // Companion with a volumetric curved tail, ears, muzzle and articulated paws.
 const fox=new THREE.Group();scene.add(fox);fox.position.set(-3.7,arch(-3.7)+.14,4.15);fox.rotation.y=.35;
 ball([0,.28,0],[.3,.2,.15],mat('#eee6ca'),fox);for(const x of [-.17,.17])for(const z of [-.08,.08])rod([x,.28,z],[x,.05,z],.035,mat('#ddd9be'),fox);ball([.26,.46,0],[.16,.17,.14],mat('#f3ebd0'),fox);ball([.39,.42,0],[.13,.07,.07],mat('#f3ebd0'),fox);ball([.49,.43,0],[.025,.025,.025],C.ink,fox);for(const z of [-.08,.08]){cone([.25,.65,z],.065,.2,mat('#e4d8bd'),fox);ball([.34,.49,z*1.5],[.018,.019,.01],C.ink,fox);}const tail=rod([-.22,.3,0],[-.55,.62,0],.11,mat('#e8dfc2'),fox);ball([-.58,.66,0],[.13,.16,.12],mat('#f7eed2'),fox);rod([.18,.34,-.13],[.18,.34,.13],.025,C.red,fox);
@@ -146,8 +132,8 @@ function render(now){const dt=Math.min((now-last)/1000,.05);last=now;elapsed+=dt
  const aspectScale=camera.aspect<1?1.32:1,r=orbit.radius*aspectScale;camera.position.set(orbit.target.x+Math.sin(orbit.yaw)*Math.cos(orbit.pitch)*r,orbit.target.y+Math.sin(orbit.pitch)*r,orbit.target.z+Math.cos(orbit.yaw)*Math.cos(orbit.pitch)*r);camera.lookAt(orbit.target);
  waterUniform.value=elapsed;ripples.forEach((m,i)=>{const phase=(elapsed*.12+i*.23)%1;m.scale.setScalar(.1+phase*.6);m.material.opacity=(1-phase)*.18;});
  petals.forEach((p,i)=>{dummy.position.set(p.x+Math.sin(elapsed*.3+p.phase)*.6,((p.y-elapsed*.2)%8+8)%8,p.z+Math.cos(elapsed*.3+p.phase)*.3);dummy.rotation.set(elapsed*.4+i,elapsed*.2+i,elapsed*.7+i);dummy.scale.set(.035,.012,.055);dummy.updateMatrix();petalMesh.setMatrixAt(i,dummy.matrix);});petalMesh.instanceMatrix.needsUpdate=true;
- hero.rotation.z=Math.sin(elapsed*1.6)*.009;sash.rotation.x=Math.sin(elapsed*1.3)*.08;fox.rotation.y=.35+Math.sin(elapsed*.8)*.09;
- renderer.render(scene,camera);frames++;frameTimes.push(dt);if(frameTimes.length>120)frameTimes.shift();if(first){first=false;renderer.shadowMap.autoUpdate=false;$('loading').classList.add('done');document.body.dataset.ready='true';}requestAnimationFrame(render);
+ character.update(elapsed);fox.rotation.y=.35+Math.sin(elapsed*.8)*.09;
+ renderer.render(scene,camera);frames++;frameTimes.push(dt);if(frameTimes.length>120)frameTimes.shift();if(first){first=false;renderer.shadowMap.autoUpdate=true;$('loading').classList.add('done');document.body.dataset.ready='true';}requestAnimationFrame(render);
 }
-window.sceneDebug=()=>({renderer:'Three.js WebGL',revision:THREE.REVISION,ready:!first,frames,active,night,settled:orbit.target.distanceTo(destination.target)+Math.abs(orbit.radius-destination.radius)+Math.abs(orbit.yaw-destination.yaw)+Math.abs(orbit.pitch-destination.pitch)<.02,drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,staticInstances:sources.length,camera:camera.position.toArray(),target:orbit.target.toArray(),pixelRatio:renderer.getPixelRatio(),size:[innerWidth,innerHeight],contextLost:renderer.getContext().isContextLost()});
+window.sceneDebug=()=>({renderer:'Three.js WebGL',revision:THREE.REVISION,character:character.stats,ready:!first,frames,active,night,settled:orbit.target.distanceTo(destination.target)+Math.abs(orbit.radius-destination.radius)+Math.abs(orbit.yaw-destination.yaw)+Math.abs(orbit.pitch-destination.pitch)<.02,drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,geometries:renderer.info.memory.geometries,staticInstances:sources.length,camera:camera.position.toArray(),target:orbit.target.toArray(),pixelRatio:renderer.getPixelRatio(),size:[innerWidth,innerHeight],contextLost:renderer.getContext().isContextLost()});
 requestAnimationFrame(render);
