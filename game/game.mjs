@@ -1,4 +1,33 @@
-import { skills, clamp, distance, target, hits } from "./rules.mjs";
+import {
+  skills as baseSkills,
+  clamp,
+  distance,
+  target,
+  hits,
+} from "./rules.mjs";
+import {
+  ACTIVE_BOOK,
+  getStats,
+  recordKill,
+  resolveDeath,
+} from "./adventure-model.mjs";
+import { createAdventureUI } from "./adventure-ui.mjs";
+import { LANDMARKS, createWorld, nearestLandmark } from "./adventure-world.mjs";
+let skills = baseSkills.map((s, i) => ({
+  ...s,
+  id: ["wind", "sweep", "thunder", "step", "flash", "heal"][i],
+}));
+let run = null,
+  adventure = null,
+  zone = "overworld",
+  pendingRevive = false,
+  savedZones = {},
+  skillCooldowns = {},
+  autosave = 0;
+let pet = { x: 0, y: 0, hp: 40, cool: 0 };
+const trial = new URLSearchParams(location.search).get("mode") === "trial";
+const stats = () =>
+  run ? getStats(run) : { maxHp: 100, attack: 18, armor: 0 };
 import { PC_KEYS, createPCControls } from "./pc-controls.mjs";
 const camera = { x: 0, y: 0, locked: true };
 let pc = null;
@@ -188,17 +217,29 @@ function reset() {
 }
 function hurt(e, n) {
   e.hp -= n;
+  if (run) e.aggro = true;
   fx.push({ kind: "text", x: e.x, y: e.y, text: `−${n}`, life: 0.7, max: 0.7 });
-  if (e.hp <= 0) kills++;
+  if (e.hp <= 0) {
+    kills++;
+    if (run) {
+      const gear = recordKill(run, Boolean(e.boss));
+      notice(gear ? `获得 ${gear.name} · 已收入行囊` : "行囊已满，未收取装备");
+    }
+  }
 }
 function cast(i) {
   if (paused || orientationBlocked || p.hp <= 0) return;
   const s = skills[i];
+  if (s.disabled) {
+    notice("此槽位未配置装备技能");
+    return;
+  }
   if (cd[i] > 0) {
     notice(`${s.name}尚在冷却`);
     return;
   }
   cd[i] = s.cd;
+  skillCooldowns[s.id] = s.cd;
   const origin = { ...p },
     point = { ...aim };
   if (s.type === "dash") {
@@ -208,7 +249,7 @@ function cast(i) {
     invulnerable = 0.25;
     fx.push({ kind: "ring", ...origin, life: 0.4, max: 0.4, color: s.color });
   } else if (s.type === "heal") {
-    p.hp = Math.min(100, p.hp + 35);
+    p.hp = Math.min(stats().maxHp, p.hp + 35);
     fx.push({ kind: "ring", ...p, life: 0.6, max: 0.6, color: s.color });
   } else if (s.type === "circle") {
     fx.push({
@@ -239,7 +280,7 @@ function attack() {
   };
   enemies
     .filter((e) => e.hp > 0 && hits(s, p, aim, e))
-    .forEach((e) => hurt(e, 18));
+    .forEach((e) => hurt(e, stats().attack));
   fx.push({
     kind: "spell",
     s,
@@ -256,6 +297,7 @@ function pause() {
   clearAim();
   joy = { x: 0, y: 0 };
   if (paused) {
+    $("restart").hidden = Boolean(run);
     $("modalTitle").textContent = "歇剑片刻";
     $("result").textContent = "战斗与冷却已暂停";
     $("resume").hidden = false;
@@ -268,6 +310,11 @@ skills.forEach((s, i) => {
   b.setAttribute("aria-label", s.name);
   b.addEventListener("pointerdown", (e) => {
     e.preventDefault();
+    s = skills[i];
+    if (s.disabled) {
+      notice("此槽位未配置装备技能");
+      return;
+    }
     if (!touch.matches) {
       pc.selectSkill(i);
       return;
@@ -291,6 +338,7 @@ skills.forEach((s, i) => {
     aim = nearest ? { ...nearest } : { x: p.x + 5, y: p.y };
   });
   function updateAim(e) {
+    s = skills[i];
     const r = $("cancelCast").getBoundingClientRect();
     cancelArmed =
       e.clientX >= r.left &&
@@ -338,7 +386,8 @@ pc = createPCControls({
   enemies: () => enemies,
   cooldowns: () => cd,
   blocked: () => paused || orientationBlocked || p.hp <= 0,
-  actorHeight: () => (48 * scale) / 22,
+  actorHeight: (e) => ((48 * scale) / 22) * (e?.boss ? 1.7 : 1),
+  menuOpen: () => $("adventurePanel").open,
   selected: () => selected,
   select: (i) => {
     selected = i;
@@ -408,6 +457,11 @@ function update(dt) {
   attackCd = Math.max(0, attackCd - dt);
   invulnerable = Math.max(0, invulnerable - dt);
   cd = cd.map((v) => Math.max(0, v - dt));
+  for (const id of Object.keys(skillCooldowns))
+    skillCooldowns[id] = Math.max(0, skillCooldowns[id] - dt);
+  skills.forEach((s, i) => {
+    skillCooldowns[s.id] = cd[i];
+  });
   pc.update(dt);
   let sx = joy.x,
     sy = joy.y;
@@ -420,12 +474,27 @@ function update(dt) {
   }
   for (const e of enemies) {
     if (e.hp <= 0) continue;
+    if (run) {
+      if (distance(e, p) < 6) e.aggro = true;
+      if (!e.aggro) continue;
+    }
     e.cool -= dt;
     if (e.wind > 0) {
       e.wind -= dt;
       if (e.wind <= 0) {
-        if (distance(p, e.mark) < 1.65 && invulnerable <= 0) {
-          p.hp = Math.max(0, p.hp - 12);
+        const radius = e.boss ? 3 : 1.65;
+        if (
+          run &&
+          run.pet.bonded &&
+          pet.hp > 0 &&
+          distance(pet, e.mark) < radius
+        )
+          pet.hp = Math.max(0, pet.hp - (e.damage || 12));
+        if (distance(p, e.mark) < radius && invulnerable <= 0) {
+          p.hp = Math.max(
+            0,
+            p.hp - Math.max(1, (e.damage || 12) - stats().armor),
+          );
           invulnerable = 0.3;
           notice("受到攻击 · 注意红色预警");
         }
@@ -441,12 +510,13 @@ function update(dt) {
       }
     } else {
       const d = distance(e, p);
-      if (d < 2 && e.cool <= 0) {
-        e.wind = 0.8;
+      if (d < (e.boss ? 4 : 2) && e.cool <= 0) {
+        e.wind = e.boss ? 1.2 : 0.8;
         e.mark = { x: p.x, y: p.y };
       } else if (d > 1.3) {
-        e.x += ((p.x - e.x) / d) * 1.8 * dt;
-        e.y += ((p.y - e.y) / d) * 1.8 * dt;
+        const speed = (e.speed || 1.8) * (e.boss && e.hp < e.max / 2 ? 1.4 : 1);
+        e.x += ((p.x - e.x) / d) * speed * dt;
+        e.y += ((p.y - e.y) / d) * speed * dt;
       }
     }
   }
@@ -468,8 +538,22 @@ function update(dt) {
   }
   fx = fx.filter((f) => f.life > 0);
   enemies = enemies.filter((e) => e.hp > 0);
-  if (!enemies.length) spawn();
+  if (!enemies.length && !run) spawn();
+  if (run) {
+    updatePet(dt);
+    autosave += dt;
+    if (autosave >= 5) {
+      adventure.save();
+      autosave = 0;
+    }
+  }
   if (p.hp <= 0) {
+    if (run) {
+      pendingRevive = resolveDeath(run) === "revive";
+      adventure.save();
+      showDeath();
+      return;
+    }
     paused = true;
     clearAim();
     $("modalTitle").textContent = "此番试炼，暂告一段";
@@ -481,7 +565,7 @@ function update(dt) {
 }
 function actor(o, hero) {
   const q = project(o.x, o.y),
-    s = scale / 22;
+    s = (scale / 22) * (o.boss ? 1.7 : 1);
   ctx.save();
   ctx.translate(q.x, q.y);
   ctx.scale(s, s);
@@ -489,14 +573,23 @@ function actor(o, hero) {
   ctx.beginPath();
   ctx.ellipse(0, 0, 13, 6, 0, 0, 7);
   ctx.fill();
-  ctx.fillStyle = hero ? "#e2d9b4" : "#a36e69";
+  const coat = run?.inventory.find((g) => g.id === run.equipment.coat);
+  ctx.fillStyle = hero
+    ? coat?.color || "#e2d9b4"
+    : o.boss
+      ? "#887a9c"
+      : "#a36e69";
   ctx.beginPath();
   ctx.moveTo(0, -35);
   ctx.lineTo(-13, -4);
   ctx.lineTo(14, -4);
   ctx.closePath();
   ctx.fill();
-  ctx.fillStyle = hero ? "#467c77" : "#583f48";
+  ctx.fillStyle = hero
+    ? run?.gender === "female"
+      ? "#75577b"
+      : "#467c77"
+    : "#583f48";
   ctx.fillRect(-7, -25, 14, 15);
   ctx.fillStyle = hero ? "#e8c7a3" : "#ceb49b";
   ctx.beginPath();
@@ -510,7 +603,8 @@ function actor(o, hero) {
   ctx.closePath();
   ctx.fill();
   if (hero) {
-    ctx.strokeStyle = "#dfe9d7";
+    const weapon = run?.inventory.find((g) => g.id === run.equipment.weapon);
+    ctx.strokeStyle = weapon?.color || "#dfe9d7";
     ctx.lineWidth = 3;
     ctx.beginPath();
     ctx.moveTo(10, -13);
@@ -579,10 +673,13 @@ function draw() {
       ctx.fill();
     }
   }
+  drawAdventure();
   for (const e of enemies)
     if (e.mark) {
-      circle(e.mark, 1.65, "#eb796b33", "#f99e89");
-      circle(e.mark, 1.65 * (1 - e.wind / 0.8), "#eb796b44");
+      const radius = e.boss ? 3 : 1.65,
+        duration = e.boss ? 1.2 : 0.8;
+      circle(e.mark, radius, "#eb796b33", "#f99e89");
+      circle(e.mark, radius * (1 - e.wind / duration), "#eb796b44");
     }
   if (!touch.matches) {
     if (pc.state.marker) circle(pc.state.marker, 0.35, null, "#b4e69c");
@@ -615,16 +712,35 @@ function draw() {
       ctx.font = "bold 16px system-ui";
       ctx.fillText(f.text, q.x, q.y);
     }
-  $("health").style.width = `${p.hp}%`;
-  $("status").textContent = `命息 ${p.hp} / 100`;
-  $("stats").textContent =
-    `第 ${wave} 波 · 击败 ${kills} · ${Math.floor(time)} 秒`;
+  $("health").style.width = `${(p.hp / stats().maxHp) * 100}%`;
+  $("status").textContent = `命息 ${p.hp} / ${stats().maxHp}`;
+  $("stats").textContent = run
+    ? `命灯 ${run.lives} · 续命符 ${run.reviveItems} · 轮回 ${run.reincarnations}`
+    : `第 ${wave} 波 · 击败 ${kills} · ${Math.floor(time)} 秒`;
+  if (run) updateAdventureHUD();
   [...$("skills").children].forEach((b, i) => {
     b.querySelector("em").textContent = cd[i] > 0 ? cd[i].toFixed(1) : "";
     b.classList.toggle("selected", selected === i);
   });
 }
 window.gameDebug = () => ({
+  adventure: run
+    ? {
+        name: run.name,
+        gender: run.gender,
+        lives: run.lives,
+        reviveItems: run.reviveItems,
+        ended: run.ended,
+        reincarnations: run.reincarnations,
+        inventory: run.inventory.length,
+        active: [...run.active],
+        passive: [...run.passive],
+        pet: { ...run.pet },
+        bossDefeated: run.bossDefeated,
+      }
+    : null,
+  zone,
+  pendingRevive,
   player: { ...p },
   wave,
   kills,
@@ -653,7 +769,301 @@ window.gameDebug = () => ({
   scale,
   heroScreen: project(p.x, p.y),
 });
+function refreshEquipment() {
+  skills.forEach((s, i) => {
+    skillCooldowns[s.id] = cd[i] || 0;
+  });
+  const next = run.active.map((id) => ACTIVE_BOOK.find((s) => s.id === id));
+  const revised = baseSkills.map((base, i) =>
+    i < 4
+      ? next[i]
+        ? { ...next[i], key: base.key }
+        : { ...base, id: `empty${i}`, name: "空槽", disabled: true }
+      : { ...base, id: i === 4 ? "flash" : "heal" },
+  );
+  skills.splice(0, skills.length, ...revised);
+  cd = skills.map((s) => skillCooldowns[s.id] || 0);
+  p.hp = Math.min(p.hp, stats().maxHp);
+  [...$("skills").children].forEach((b, i) => {
+    b.innerHTML = `<b>${(touch.matches ? baseSkills[i].key : PC_KEYS[i]).toUpperCase()}</b><span></span><em></em>`;
+    b.querySelector("span").textContent = skills[i].name;
+    b.setAttribute("aria-label", skills[i].name);
+    b.classList.toggle("empty", Boolean(skills[i].disabled));
+  });
+  clearAim();
+  pc?.reset();
+}
+function captureAdventure() {
+  return {
+    p: { ...p },
+    enemies: enemies.filter((e) => e.hp > 0),
+    fx: fx.filter((f) => f.pending),
+    cd: [...cd],
+    skillCooldowns: { ...skillCooldowns },
+    time,
+    kills,
+    attackCd,
+    invulnerable,
+    zone,
+    pet: { ...pet },
+    pendingRevive,
+    savedZones,
+  };
+}
+function startAdventure(next, snapshot = null) {
+  run = next;
+  reset();
+  zone = "overworld";
+  savedZones = {};
+  skillCooldowns = {};
+  pendingRevive = false;
+  pet = { x: 0, y: 0, hp: 40, cool: 0 };
+  p = { x: 0, y: 0, hp: stats().maxHp };
+  enemies = createWorld(run.seed, zone);
+  kills = run.kills;
+  refreshEquipment();
+  if (snapshot) {
+    p = { ...snapshot.p };
+    enemies = snapshot.enemies;
+    fx = Array.isArray(snapshot.fx) ? snapshot.fx : [];
+    cd = [...snapshot.cd];
+    skillCooldowns = snapshot.skillCooldowns || {};
+    time = snapshot.time;
+    kills = snapshot.kills;
+    attackCd = snapshot.attackCd;
+    invulnerable = snapshot.invulnerable;
+    zone = snapshot.zone;
+    pet = { ...snapshot.pet };
+    pendingRevive = snapshot.pendingRevive;
+    savedZones = snapshot.savedZones || {};
+  }
+  camera.x = p.x;
+  camera.y = p.y;
+  autosave = 0;
+  paused = false;
+  $("resume").hidden = false;
+  $("restart").textContent = "返回归魂碑";
+  if (p.hp <= 0 || run.ended) showDeath();
+  else
+    notice(
+      snapshot ? "已恢复同一世的冒险" : "先清除三名妖影，再与西侧灵狐结缘",
+    );
+  adventure.save();
+}
+function showDeath() {
+  paused = true;
+  pc.reset();
+  clearAim();
+  $("restart").hidden = false;
+  $("modalTitle").textContent = run.ended ? "命火已尽 · 本世终" : "命灯照归途";
+  $("result").textContent = run.ended
+    ? `${run.name} 本世击败 ${run.kills} 名敌人。可开启新的轮回。`
+    : `重生机会已消耗；剩余命灯 ${run.lives}，续命符 ${run.reviveItems}。`;
+  $("resume").hidden = true;
+  $("restart").textContent = run.ended ? "轮回转世" : "重生";
+  if (!$("modal").open) $("modal").showModal();
+}
+function restartAdventure() {
+  if (!run) {
+    reset();
+    return;
+  }
+  if (run.ended) {
+    $("modal").close();
+    adventure.welcome(run);
+    return;
+  }
+  if (!pendingRevive) {
+    notice("仅死亡后可重生；请前往归魂碑休整");
+    return;
+  }
+  savedZones[zone] = enemies;
+  pendingRevive = false;
+  zone = "overworld";
+  p = { x: 0, y: 0, hp: stats().maxHp };
+  enemies = savedZones.overworld || createWorld(run.seed, "overworld");
+  fx = [];
+  pet = { x: 0, y: 0, hp: 40, cool: 0 };
+  pc.reset();
+  camera.x = 0;
+  camera.y = 0;
+  invulnerable = 2;
+  paused = false;
+  $("modal").close();
+  $("resume").hidden = false;
+  adventure.save();
+}
+function inCombat() {
+  return enemies.some((e) => e.hp > 0 && (e.wind > 0 || distance(e, p) < 6));
+}
+function interact() {
+  if (!run || paused || orientationBlocked || p.hp <= 0) return;
+  const mark = nearestLandmark(zone, p);
+  if (mark.distance > 2.6) {
+    notice(`靠近${mark.name}后再交互`);
+    return;
+  }
+  if (inCombat()) {
+    notice("附近有敌人，先脱战再交互");
+    return;
+  }
+  if (mark.id === "camp") {
+    p.hp = stats().maxHp;
+    pet.hp = 40;
+    pet.cool = 0;
+    adventure.save();
+    notice("归魂碑：生命与灵宠已恢复，进度已保存");
+  }
+  if (mark.id === "fox") {
+    if (run.kills < 3) {
+      notice("先清除三名妖影，解除灵狐周围的邪气");
+      return;
+    }
+    run.pet.bonded = true;
+    pet.hp = 40;
+    pet.x = p.x - 1;
+    pet.y = p.y;
+    adventure.save();
+    notice(`${run.pet.name}与你结缘，从此并肩同行`);
+  }
+  if (mark.id === "gate" || mark.id === "exit") {
+    if (mark.id === "gate" && run.kills < 3) {
+      notice("清除三名妖影后，古寺封印才会解除");
+      return;
+    }
+    savedZones[zone] = enemies;
+    zone = mark.id === "gate" ? "dungeon" : "overworld";
+    enemies = savedZones[zone] || createWorld(run.seed, zone);
+    p.x = zone === "dungeon" ? -9 : 7;
+    p.y = zone === "dungeon" ? -9 : 3;
+    pet.x = p.x - 1;
+    pet.y = p.y;
+    fx = [];
+    pc.reset();
+    camera.x = p.x;
+    camera.y = p.y;
+    adventure.save();
+    notice(
+      zone === "dungeon" ? "古寺：寻找镇寺石魁，避开其蓄力重击" : "返回山野",
+    );
+  }
+}
+function updatePet(dt) {
+  if (!run.pet.bonded || pet.hp <= 0) return;
+  const d = distance(pet, p);
+  if (d > 1.3) {
+    const step = Math.min(d - 1.3, 6 * dt);
+    pet.x += ((p.x - pet.x) / d) * step;
+    pet.y += ((p.y - pet.y) / d) * step;
+  }
+  pet.cool = Math.max(0, pet.cool - dt);
+  if (pet.cool > 0) return;
+  const enemy = enemies
+    .filter((e) => e.hp > 0 && distance(e, pet) < 5 && e.aggro)
+    .sort((a, b) => distance(a, pet) - distance(b, pet))[0];
+  if (enemy) {
+    hurt(enemy, 8);
+    pet.cool = 2.5;
+    fx.push({
+      kind: "ring",
+      x: enemy.x,
+      y: enemy.y,
+      color: "#d9e9c1",
+      life: 0.35,
+      max: 0.35,
+    });
+  }
+}
+function updateAdventureHUD() {
+  const task = run.bossDefeated
+    ? "古寺已通关 · 返回归魂碑保存"
+    : run.kills < 3
+      ? `清除妖影 ${run.kills}/3 · 获得续命符`
+      : !run.pet.bonded
+        ? "西侧灵狐等待结缘 · 坐标 -5, 2"
+        : zone === "overworld"
+          ? "前往东侧古寺入口 · 坐标 8, 4"
+          : "击败镇寺石魁 · 坐标 7, 7";
+  $("questHUD").textContent =
+    `${zone === "dungeon" ? "古寺" : "山野"} · ${task}`;
+  const near = nearestLandmark(zone, p);
+  $("interactButton").textContent =
+    near.distance <= 2.6 ? `${near.name} · 交互` : "交互 T";
+}
+function drawAdventure() {
+  if (!run) return;
+  const mapSize = touch.matches ? 86 : 130,
+    mapX = touch.matches ? 24 : 28,
+    mapY = touch.matches ? 114 : 300;
+  ctx.fillStyle = "#102b24bb";
+  ctx.fillRect(mapX, mapY, mapSize, mapSize);
+  ctx.strokeStyle = "#8fa384";
+  ctx.strokeRect(mapX, mapY, mapSize, mapSize);
+  const dot = (v, color, r) => {
+    const x = mapX + mapSize / 2 + ((v.x - v.y) * mapSize) / 60,
+      y = mapY + mapSize / 2 + ((v.x + v.y) * mapSize) / 60;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  };
+  for (const v of LANDMARKS[zone]) dot(v, v.color, 4);
+  for (const e of enemies)
+    if (e.hp > 0) dot(e, e.boss ? "#f8a354" : "#cf8278", e.boss ? 4 : 2);
+  dot(p, "#f7f4c9", 4);
+  for (const mark of LANDMARKS[zone]) {
+    const q = project(mark.x, mark.y);
+    circle(mark, 0.8, "#b3c99633", mark.color);
+    ctx.fillStyle = mark.color;
+    ctx.fillRect(q.x - 8, q.y - 42, 16, 35);
+    ctx.font = "bold 13px system-ui";
+    ctx.textAlign = "center";
+    ctx.fillText(
+      mark.id === "fox" && run.pet.bonded ? "灵契旧址" : mark.name,
+      q.x,
+      q.y - 51,
+    );
+    ctx.textAlign = "start";
+  }
+  if (run.pet.bonded && pet.hp > 0) {
+    const q = project(pet.x, pet.y);
+    circle(pet, 0.3, "#071b1766");
+    ctx.fillStyle = "#e7e7ce";
+    ctx.beginPath();
+    ctx.ellipse(q.x, q.y - 10, 14, 8, -0.3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(q.x + 6, q.y - 14);
+    ctx.lineTo(q.x + 10, q.y - 27);
+    ctx.lineTo(q.x + 16, q.y - 14);
+    ctx.fill();
+    ctx.fillStyle = "#9abb8b";
+    ctx.fillRect(q.x - 15, q.y - 33, (30 * Math.max(0, pet.hp)) / 40, 3);
+  }
+}
+adventure = createAdventureUI({
+  run: () => run,
+  capture: captureAdventure,
+  start: startAdventure,
+  notice,
+  changed: refreshEquipment,
+  canConfigure: () => !inCombat(),
+  petDown: () => pet.hp <= 0,
+  interact,
+  menu: (open) => {
+    paused = open;
+    pc?.reset();
+    clearAim();
+  },
+});
+$("restart").onclick = restartAdventure;
 reset();
+if (!trial) {
+  paused = true;
+  adventure.welcome();
+} else {
+  document.body.classList.add("trial-mode");
+}
 let last = performance.now();
 function frame(now) {
   const dt = Math.min((now - last) / 1000, 0.04);

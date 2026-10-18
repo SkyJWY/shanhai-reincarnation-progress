@@ -35,7 +35,7 @@ export function createPCControls(api) {
         .filter((e) => e.hp > 0)
         .map((e) => {
           const q = api.project(e.x, e.y);
-          const height = api.actorHeight();
+          const height = api.actorHeight(e);
           const dx = Math.abs(point.x - q.x),
             dy = point.y - q.y;
           return {
@@ -49,7 +49,7 @@ export function createPCControls(api) {
     );
   }
   function selectSkill(i, keyboard = false) {
-    if (blocked()) return;
+    if (blocked() || api.skills[i].disabled) return;
     cancel();
     if (api.cooldowns()[i] > 0) {
       api.notice("技能尚在冷却");
@@ -122,6 +122,7 @@ export function createPCControls(api) {
   addEventListener("keydown", (e) => {
     if (
       !enabled() ||
+      api.menuOpen?.() ||
       e.target.closest?.('input:not([type="checkbox"]),select,textarea')
     )
       return;

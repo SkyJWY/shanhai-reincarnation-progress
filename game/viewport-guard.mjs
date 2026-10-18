@@ -25,7 +25,7 @@ document.addEventListener(
   (event) => {
     const target = event.target instanceof Element ? event.target : null;
     const pointerControl = target?.closest("#skills, #attack, #stick, canvas");
-    const nativeControl = target?.closest("button, a");
+    const nativeControl = target?.closest("button, a, input, select, label");
     if (pointerControl || !nativeControl) prevent(event);
   },
   nonPassive,
