@@ -12,6 +12,7 @@ export function createPCControls(api) {
     marker: null,
     pointer: null,
     centerHeld: false,
+    quickKey: null,
   };
   const enabled = () => !api.touch.matches;
   const blocked = () => !enabled() || api.blocked();
@@ -23,6 +24,7 @@ export function createPCControls(api) {
     state.hold = false;
   }
   function cancel() {
+    state.quickKey = null;
     api.clearAim();
     state.preparingAttack = false;
   }
@@ -46,14 +48,18 @@ export function createPCControls(api) {
         .sort((a, b) => a.score - b.score)[0]?.e || null
     );
   }
-  function selectSkill(i) {
+  function selectSkill(i, keyboard = false) {
     if (blocked()) return;
-    state.preparingAttack = false;
+    cancel();
     if (api.cooldowns()[i] > 0) {
       api.notice("技能尚在冷却");
       return;
     }
-    if (api.skills[i].type === "heal" || api.quickCast()) {
+    if (api.quickCast() && keyboard) {
+      state.quickKey = PC_KEYS[i];
+      api.select(i);
+      api.notice("按住瞄准 · 松键释放 · 右键 / Esc 取消");
+    } else if (api.skills[i].type === "heal") {
       api.cast(i);
       api.clearAim();
     } else {
@@ -71,6 +77,13 @@ export function createPCControls(api) {
       y: Math.max(-13, Math.min(13, ground.y)),
     };
     state.attackMove = attackMove;
+    if (state.target && api.selected() < 0) {
+      const p = api.player();
+      if (Math.hypot(state.target.x - p.x, state.target.y - p.y) <= 2.4) {
+        api.aim({ ...state.target });
+        api.attack();
+      }
+    }
     state.marker = { ...state.move, life: 0.65 };
     api.notice(
       state.target ? "追击攻击" : attackMove ? "攻击移动" : "前往目标位置",
@@ -92,15 +105,17 @@ export function createPCControls(api) {
       issue(state.pointer);
     } else if (e.button === 0) {
       if (api.selected() >= 0) {
+        if (state.quickKey !== null) return;
         api.cast(api.selected());
         api.clearAim();
       } else if (state.preparingAttack) {
         issue(state.pointer, true);
       } else {
-        state.inspected = pick(state.pointer);
-        api.notice(
-          state.inspected ? "已选中妖影 · 右键攻击" : "左键选择 · 右键移动",
-        );
+        if (pick(state.pointer)) issue(state.pointer);
+        else {
+          state.inspected = null;
+          api.notice("左键点击怪物攻击 · 右键地面移动");
+        }
       }
     }
   });
@@ -125,11 +140,11 @@ export function createPCControls(api) {
     if (state.pointer) api.aim(api.unproject(state.pointer.x, state.pointer.y));
     const i = PC_KEYS.indexOf(key);
     if (i >= 0) {
-      selectSkill(i);
+      selectSkill(i, true);
       return;
     }
     if (key === "a") {
-      api.clearAim();
+      cancel();
       state.preparingAttack = true;
       api.notice("攻击移动：左键确认");
     }
@@ -151,6 +166,15 @@ export function createPCControls(api) {
   });
   addEventListener("keyup", (e) => {
     if (e.key === " ") state.centerHeld = false;
+    const key = e.key.toLowerCase();
+    if (state.quickKey !== key) return;
+    const i = PC_KEYS.indexOf(key);
+    if (!blocked() && i >= 0 && api.selected() === i) {
+      if (state.pointer)
+        api.aim(api.unproject(state.pointer.x, state.pointer.y));
+      api.cast(i);
+    }
+    cancel();
   });
   function update(dt) {
     if (blocked()) return;
