@@ -50,7 +50,7 @@ let W,
   joy = { x: 0, y: 0 },
   attackCd = 0,
   invulnerable = 0;
-const touch = matchMedia("(pointer: coarse)");
+const touch = matchMedia("(pointer: coarse), (hover: none)");
 let orientationBlocked = false,
   cancelArmed = false,
   skillPointer = null;
@@ -74,8 +74,17 @@ const decor = Array.from({ length: 80 }, (_, i) => ({
   h: 30 + (i % 5) * 10,
 }));
 function resize() {
-  W = innerWidth;
-  H = innerHeight;
+  const viewport = window.visualViewport;
+  W =
+    touch.matches && viewport && viewport.scale === 1
+      ? Math.min(innerWidth, viewport.width)
+      : innerWidth;
+  H =
+    touch.matches && viewport && viewport.scale === 1
+      ? Math.min(innerHeight, viewport.height)
+      : innerHeight;
+  document.documentElement.style.setProperty("--game-width", `${W}px`);
+  document.documentElement.style.setProperty("--game-height", `${H}px`);
   const d = Math.min(devicePixelRatio, 2);
   canvas.width = W * d;
   canvas.height = H * d;
@@ -86,6 +95,7 @@ function resize() {
   syncOrientation();
 }
 addEventListener("resize", resize);
+window.visualViewport?.addEventListener("resize", resize);
 resize();
 const project = (x, y, z = 0) => ({
   x:
@@ -992,25 +1002,27 @@ function updateAdventureHUD() {
 }
 function drawAdventure() {
   if (!run) return;
-  const mapSize = touch.matches ? 86 : 130,
-    mapX = touch.matches ? 24 : 28,
-    mapY = touch.matches ? 114 : 300;
-  ctx.fillStyle = "#102b24bb";
-  ctx.fillRect(mapX, mapY, mapSize, mapSize);
-  ctx.strokeStyle = "#8fa384";
-  ctx.strokeRect(mapX, mapY, mapSize, mapSize);
-  const dot = (v, color, r) => {
-    const x = mapX + mapSize / 2 + ((v.x - v.y) * mapSize) / 60,
-      y = mapY + mapSize / 2 + ((v.x + v.y) * mapSize) / 60;
-    ctx.fillStyle = color;
-    ctx.beginPath();
-    ctx.arc(x, y, r, 0, Math.PI * 2);
-    ctx.fill();
-  };
-  for (const v of LANDMARKS[zone]) dot(v, v.color, 4);
-  for (const e of enemies)
-    if (e.hp > 0) dot(e, e.boss ? "#f8a354" : "#cf8278", e.boss ? 4 : 2);
-  dot(p, "#f7f4c9", 4);
+  const mapSize = touch.matches ? 58 : 130,
+    mapX = touch.matches ? 14 : 28,
+    mapY = touch.matches ? 70 : 300;
+  if (!touch.matches || H >= 320) {
+    ctx.fillStyle = "#102b24bb";
+    ctx.fillRect(mapX, mapY, mapSize, mapSize);
+    ctx.strokeStyle = "#8fa384";
+    ctx.strokeRect(mapX, mapY, mapSize, mapSize);
+    const dot = (v, color, r) => {
+      const x = mapX + mapSize / 2 + ((v.x - v.y) * mapSize) / 60,
+        y = mapY + mapSize / 2 + ((v.x + v.y) * mapSize) / 60;
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fill();
+    };
+    for (const v of LANDMARKS[zone]) dot(v, v.color, 4);
+    for (const e of enemies)
+      if (e.hp > 0) dot(e, e.boss ? "#f8a354" : "#cf8278", e.boss ? 4 : 2);
+    dot(p, "#f7f4c9", 4);
+  }
   for (const mark of LANDMARKS[zone]) {
     const q = project(mark.x, mark.y);
     circle(mark, 0.8, "#b3c99633", mark.color);
@@ -1018,11 +1030,12 @@ function drawAdventure() {
     ctx.fillRect(q.x - 8, q.y - 42, 16, 35);
     ctx.font = "bold 13px system-ui";
     ctx.textAlign = "center";
-    ctx.fillText(
-      mark.id === "fox" && run.pet.bonded ? "灵契旧址" : mark.name,
-      q.x,
-      q.y - 51,
-    );
+    if (!touch.matches || (q.y > 105 && q.x > 175 && q.x < W - 180))
+      ctx.fillText(
+        mark.id === "fox" && run.pet.bonded ? "灵契旧址" : mark.name,
+        q.x,
+        q.y - 51,
+      );
     ctx.textAlign = "start";
   }
   if (run.pet.bonded && pet.hp > 0) {
@@ -1066,7 +1079,7 @@ if (!trial) {
 }
 let last = performance.now();
 function frame(now) {
-  const dt = Math.min((now - last) / 1000, 0.04);
+  const dt = Math.max(0, Math.min((now - last) / 1000, 0.04));
   last = now;
   update(dt);
   draw();

@@ -142,7 +142,7 @@ button:disabled {
 .trial-mode #questHUD {
   display: none;
 }
-@media (pointer: coarse) {
+@media (pointer: coarse), (hover: none) {
   #adventureTools {
     left: auto;
     right: calc(var(--edge) + 52px);

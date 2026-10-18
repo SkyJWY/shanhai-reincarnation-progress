@@ -104,7 +104,7 @@ footer small {
 #castSetting input {
   accent-color: #b4d3aa;
 }
-@media (pointer: coarse) {
+@media (pointer: coarse), (hover: none) {
   #castSetting {
     display: none;
   }
@@ -265,7 +265,7 @@ dialog button {
 #rotateHint small {
   color: #a4b39e;
 }
-@media (pointer: coarse) {
+@media (pointer: coarse), (hover: none) {
   :root {
     --edge: max(18px, env(safe-area-inset-right));
     --left: max(24px, env(safe-area-inset-left));
