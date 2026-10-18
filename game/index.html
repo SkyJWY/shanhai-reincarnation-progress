@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta
       name="viewport"
-      content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"
+      content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"
     />
     <title>山海轮回 · 雾隐试炼</title>
     <link rel="stylesheet" href="style.css" />
@@ -13,7 +13,7 @@
     <canvas id="world"></canvas>
     <header>
       <div>
-        <small>山海轮回 / COMBAT PROTOTYPE 0.2</small>
+        <small>山海轮回 / COMBAT PROTOTYPE 0.2.1</small>
         <h1>雾隐试炼</h1>
         <p>竹影深处，试剑问道。</p>
       </div>
@@ -52,6 +52,7 @@
       <p id="result"></p>
       <button id="restart">重新试炼</button><button id="resume">继续</button>
     </dialog>
+    <script type="module" src="viewport-guard.mjs"></script>
     <script type="module" src="game.mjs"></script>
   </body>
 </html>
