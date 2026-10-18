@@ -1,0 +1,244 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: #132c2b;
+  color: #f0ead5;
+  font: 14px system-ui;
+  overflow: hidden;
+}
+canvas {
+  display: block;
+  width: 100vw;
+  height: 100dvh;
+  touch-action: none;
+}
+header {
+  position: absolute;
+  top: 28px;
+  left: 32px;
+  right: 32px;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+header small {
+  color: #b6c8ac;
+  letter-spacing: 3px;
+  font-size: 10px;
+}
+h1 {
+  font-family: serif;
+  font-size: 34px;
+  letter-spacing: 8px;
+  margin: 9px 0;
+}
+header p {
+  color: #b7cbb9;
+}
+a {
+  color: #d7c69a;
+  pointer-events: auto;
+  text-decoration: none;
+}
+aside {
+  position: absolute;
+  top: 150px;
+  left: 32px;
+  width: 220px;
+  color: #d4dfcb;
+}
+.bar {
+  background: #182c28;
+  border: 1px solid #8ba58c;
+  height: 9px;
+  margin: 10px 0;
+}
+.bar i {
+  display: block;
+  background: #9cc49a;
+  height: 100%;
+  transition: width 0.15s;
+}
+footer {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  pointer-events: none;
+}
+footer p {
+  font-size: 12px;
+  color: #c2d4c3;
+}
+footer small {
+  font-size: 10px;
+  color: #99afa5;
+}
+#skills {
+  display: flex;
+  gap: 9px;
+  justify-content: center;
+  pointer-events: auto;
+}
+button {
+  font: inherit;
+  color: #efe5c6;
+  background: #1e3a35;
+  border: 1px solid #849982;
+  border-radius: 8px;
+  padding: 10px;
+  cursor: pointer;
+  touch-action: none;
+}
+#skills button {
+  width: 78px;
+  height: 70px;
+  position: relative;
+  background: #19362ef0;
+  box-shadow: 0 4px 12px #0004;
+}
+#skills button:nth-child(5) {
+  margin-left: 18px;
+}
+#skills b {
+  display: block;
+  color: #d9bf7e;
+  margin-bottom: 5px;
+}
+#skills em {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #102922e8;
+  font-size: 23px;
+  font-style: normal;
+  border-radius: 8px;
+}
+#skills em:empty {
+  display: none;
+}
+#skills .selected {
+  border: 2px solid #e1d3a0;
+}
+#toast {
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #e6d5a8;
+  background: #102823b8;
+  padding: 9px 18px;
+  border-radius: 20px;
+  white-space: nowrap;
+  font-size: 12px;
+  pointer-events: none;
+}
+dialog {
+  background: #18352f;
+  color: #eee4c9;
+  border: 1px solid #839b80;
+  border-radius: 16px;
+  padding: 32px;
+  min-width: 280px;
+  text-align: center;
+}
+dialog::backdrop {
+  background: #091c17aa;
+}
+dialog button {
+  margin: 8px;
+}
+#stick,
+#attack {
+  display: none;
+}
+@media (pointer: coarse) {
+  #stick {
+    display: block;
+    position: absolute;
+    left: 22px;
+    bottom: 100px;
+    width: 100px;
+    height: 100px;
+    border: 1px solid #b6ceb76b;
+    border-radius: 50%;
+    background: #122d2944;
+    touch-action: none;
+  }
+  #stick b {
+    position: absolute;
+    left: 34px;
+    top: 34px;
+    width: 30px;
+    height: 30px;
+    background: #bbd0b477;
+    border-radius: 50%;
+  }
+  #attack {
+    display: block;
+    position: absolute;
+    right: 22px;
+    bottom: 190px;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+  }
+  footer p {
+    display: none;
+  }
+  #skills {
+    justify-content: flex-end;
+    padding-right: 18px;
+    gap: 5px;
+  }
+  #skills button {
+    width: 48px;
+    height: 57px;
+    font-size: 11px;
+  }
+  #skills button:nth-child(5) {
+    margin-left: 6px;
+  }
+  #toast {
+    top: auto;
+    bottom: 260px;
+    max-width: 95%;
+    white-space: normal;
+    text-align: center;
+  }
+}
+@media (max-width: 600px) {
+  header {
+    top: 18px;
+    left: 18px;
+    right: 18px;
+  }
+  header small {
+    font-size: 8px;
+    letter-spacing: 1px;
+  }
+  h1 {
+    font-size: 26px;
+  }
+  aside {
+    left: 18px;
+    top: 125px;
+    width: 180px;
+  }
+  header a {
+    font-size: 12px;
+  }
+  footer small {
+    display: block;
+    padding: 0 12px;
+  }
+  #skills button {
+    width: 45px;
+  }
+  #skills {
+    gap: 4px;
+  }
+}

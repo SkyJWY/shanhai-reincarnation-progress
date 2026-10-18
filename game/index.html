@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,user-scalable=no"
+    />
+    <title>山海轮回 · 雾隐试炼</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="world"></canvas>
+    <header>
+      <div>
+        <small>山海轮回 / COMBAT PROTOTYPE 0.1</small>
+        <h1>雾隐试炼</h1>
+        <p>竹影深处，试剑问道。</p>
+      </div>
+      <a href="../">开发进度 ↗</a>
+    </header>
+    <aside>
+      <span id="status">试炼开始</span>
+      <div class="bar"><i id="health"></i></div>
+      <span id="stats"></span>
+    </aside>
+    <div id="toast">按住技能键瞄准，松开释放；右键取消</div>
+    <footer>
+      <div id="skills"></div>
+      <p>
+        WASD 移动 · 鼠标瞄准 · 左键普攻 · 1–4 装备技能 · F/G 通用技能 · Esc 暂停
+      </p>
+      <small
+        >规则生成战斗原型 · 无实时 AI / 装备养成 / 轮回存档 ·
+        美术为程序绘制占位</small
+      >
+    </footer>
+    <div id="stick"><b></b></div>
+    <button id="attack">普攻</button>
+    <dialog id="modal">
+      <h2 id="modalTitle">试炼结束</h2>
+      <p id="result"></p>
+      <button id="restart">重新试炼</button><button id="resume">继续</button>
+    </dialog>
+    <script type="module" src="game.mjs"></script>
+  </body>
+</html>
