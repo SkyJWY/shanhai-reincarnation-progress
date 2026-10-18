@@ -29,6 +29,7 @@ const trial = new URLSearchParams(location.search).get("mode") === "trial";
 const stats = () =>
   run ? getStats(run) : { maxHp: 100, attack: 18, armor: 0 };
 import { PC_KEYS, createPCControls } from "./pc-controls.mjs";
+import { createArt, skillIcon } from "./art.mjs";
 const camera = { x: 0, y: 0, locked: true };
 let pc = null;
 const $ = (id) => document.getElementById(id),
@@ -123,6 +124,7 @@ function unproject(x, y) {
     y: (touch.matches ? p?.y || 0 : camera.y) + (b - a) / 2,
   };
 }
+const art=createArt(ctx,project,()=>scale);
 function path(points, fill, stroke) {
   ctx.beginPath();
   points.forEach((v, i) => {
@@ -318,6 +320,7 @@ skills.forEach((s, i) => {
   const b = document.createElement("button");
   b.innerHTML = `<b>${(touch.matches ? s.key : PC_KEYS[i]).toUpperCase()}</b>${s.name}<em></em>`;
   b.setAttribute("aria-label", s.name);
+  b.style.setProperty("--skill-icon",skillIcon(i));
   b.addEventListener("pointerdown", (e) => {
     e.preventDefault();
     s = skills[i];
@@ -574,116 +577,11 @@ function update(dt) {
   }
 }
 function actor(o, hero) {
-  const q = project(o.x, o.y),
-    s = (scale / 22) * (o.boss ? 1.7 : 1);
-  ctx.save();
-  ctx.translate(q.x, q.y);
-  ctx.scale(s, s);
-  ctx.fillStyle = "#071b1766";
-  ctx.beginPath();
-  ctx.ellipse(0, 0, 13, 6, 0, 0, 7);
-  ctx.fill();
-  const coat = run?.inventory.find((g) => g.id === run.equipment.coat);
-  ctx.fillStyle = hero
-    ? coat?.color || "#e2d9b4"
-    : o.boss
-      ? "#887a9c"
-      : "#a36e69";
-  ctx.beginPath();
-  ctx.moveTo(0, -35);
-  ctx.lineTo(-13, -4);
-  ctx.lineTo(14, -4);
-  ctx.closePath();
-  ctx.fill();
-  ctx.fillStyle = hero
-    ? run?.gender === "female"
-      ? "#75577b"
-      : "#467c77"
-    : "#583f48";
-  ctx.fillRect(-7, -25, 14, 15);
-  ctx.fillStyle = hero ? "#e8c7a3" : "#ceb49b";
-  ctx.beginPath();
-  ctx.arc(0, -36, 7, 0, 7);
-  ctx.fill();
-  ctx.fillStyle = hero ? "#243d38" : "#604348";
-  ctx.beginPath();
-  ctx.moveTo(-15, -38);
-  ctx.lineTo(0, -48);
-  ctx.lineTo(15, -38);
-  ctx.closePath();
-  ctx.fill();
-  if (hero) {
-    const weapon = run?.inventory.find((g) => g.id === run.equipment.weapon);
-    ctx.strokeStyle = weapon?.color || "#dfe9d7";
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(10, -13);
-    ctx.lineTo(26, -37);
-    ctx.stroke();
-  } else {
-    ctx.fillStyle = "#291f26";
-    ctx.fillRect(-14, -55, 28, 3);
-    ctx.fillStyle = "#df9687";
-    ctx.fillRect(-14, -55, (28 * o.hp) / o.max, 3);
-  }
-  ctx.restore();
+  if(hero) art.hero(o,run,time,attackCd); else art.monster(o,time);
 }
 function draw() {
   ctx.clearRect(0, 0, W, H);
-  const g = ctx.createLinearGradient(0, 0, 0, H);
-  g.addColorStop(0, "#193d3a");
-  g.addColorStop(1, "#102722");
-  ctx.fillStyle = g;
-  ctx.fillRect(0, 0, W, H);
-  path(
-    [
-      { x: -14, y: -14 },
-      { x: 14, y: -14 },
-      { x: 14, y: 14 },
-      { x: -14, y: 14 },
-    ],
-    "#35514a",
-    "#6c8971",
-  );
-  for (let x = -12; x <= 12; x += 2)
-    for (let y = -12; y <= 12; y += 2) {
-      path(
-        [
-          { x, y },
-          { x: x + 1.92, y },
-          { x: x + 1.92, y: y + 1.92 },
-          { x, y: y + 1.92 },
-        ],
-        ((x + y) / 2) % 2 ? "#3a554b" : "#3d584d",
-      );
-    }
-  circle({ x: 0, y: 0 }, 4, null, "#83927866");
-  circle({ x: 0, y: 0 }, 4.5, null, "#83927844");
-  for (const b of decor) {
-    if (Math.abs(b.x) < 14 && Math.abs(b.y) < 14) continue;
-    const q = project(b.x, b.y);
-    ctx.strokeStyle = "#537f65";
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(q.x, q.y);
-    ctx.lineTo(q.x - 4, q.y - b.h);
-    ctx.stroke();
-    ctx.fillStyle = "#305e4e";
-    for (let i = 0; i < 3; i++) {
-      ctx.beginPath();
-      ctx.ellipse(
-        q.x + (i % 2 ? 9 : -9),
-        q.y - b.h + i * 14,
-        17,
-        5,
-        i % 2 ? 0.5 : -0.5,
-        0,
-        7,
-      );
-      ctx.fill();
-    }
-  }
-  drawAdventure();
+  art.terrain(W,H,time,zone);
   for (const e of enemies)
     if (e.mark) {
       const radius = e.boss ? 3 : 1.65,
@@ -704,17 +602,23 @@ function draw() {
     shape(preview, p, aim, 0.45);
   }
   for (const f of fx) {
-    if (f.kind === "spell")
-      shape(f.s, f.origin, f.point, f.pending ? 0.35 : (f.life / f.max) * 0.7);
+    if (f.kind === "spell") {
+      shape(f.s, f.origin, f.point, f.pending ? 0.20 : (f.life / f.max) * 0.5);
+      art.spell(f);
+    }
     else if (f.kind === "ring") {
       ctx.globalAlpha = f.life / f.max;
       circle(f, 1 + (1 - f.life / f.max) * 2, null, f.color);
       ctx.globalAlpha = 1;
     }
   }
-  [...enemies.map((e) => ({ o: e, hero: false })), { o: p, hero: true }]
-    .sort((a, b) => a.o.x + a.o.y - b.o.x - b.o.y)
-    .forEach((v) => actor(v.o, v.hero));
+  const layers=[...enemies.map(o=>({o,type:'enemy'})),{o:p,type:'hero'},...art.props(zone).map(o=>({o,type:'prop'}))];
+  if(run){layers.push(...LANDMARKS[zone].map(o=>({o,type:'landmark'})));if(run.pet.bonded&&pet.hp>0)layers.push({o:pet,type:'pet'});}
+  layers.sort((a,b)=>a.o.x+a.o.y-(a.type==='landmark'&&a.o.id==='camp'?2:0)-b.o.x-b.o.y+(b.type==='landmark'&&b.o.id==='camp'?2:0)).forEach(({o,type})=>{
+    if(type==='prop')art.prop(o,time,p);else if(type==='landmark')art.landmark(o,run,time);else if(type==='pet')art.fox(o,time);else actor(o,type==='hero');
+  });
+  art.atmosphere(W,H,time);
+  drawAdventure();
   for (const f of fx)
     if (f.kind === "text") {
       const q = project(f.x, f.y, 45 + (1 - f.life / f.max) * 25);
@@ -798,6 +702,7 @@ function refreshEquipment() {
     b.innerHTML = `<b>${(touch.matches ? baseSkills[i].key : PC_KEYS[i]).toUpperCase()}</b><span></span><em></em>`;
     b.querySelector("span").textContent = skills[i].name;
     b.setAttribute("aria-label", skills[i].name);
+    b.style.setProperty("--skill-icon",skills[i].disabled?"none":skillIcon(i>=4?i:({line:0,cone:1,circle:2,dash:3}[skills[i].type]??0)));
     b.classList.toggle("empty", Boolean(skills[i].disabled));
   });
   clearAim();
@@ -1027,32 +932,19 @@ function drawAdventure() {
     const q = project(mark.x, mark.y);
     circle(mark, 0.8, "#b3c99633", mark.color);
     ctx.fillStyle = mark.color;
-    ctx.fillRect(q.x - 8, q.y - 42, 16, 35);
+    ctx.shadowColor="#17372f";ctx.shadowBlur=4;
     ctx.font = "bold 13px system-ui";
     ctx.textAlign = "center";
     if (!touch.matches || (q.y > 105 && q.x > 175 && q.x < W - 180))
       ctx.fillText(
         mark.id === "fox" && run.pet.bonded ? "灵契旧址" : mark.name,
         q.x,
-        q.y - 51,
+        q.y + 20,
       );
     ctx.textAlign = "start";
+    ctx.shadowBlur=0;
   }
-  if (run.pet.bonded && pet.hp > 0) {
-    const q = project(pet.x, pet.y);
-    circle(pet, 0.3, "#071b1766");
-    ctx.fillStyle = "#e7e7ce";
-    ctx.beginPath();
-    ctx.ellipse(q.x, q.y - 10, 14, 8, -0.3, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.moveTo(q.x + 6, q.y - 14);
-    ctx.lineTo(q.x + 10, q.y - 27);
-    ctx.lineTo(q.x + 16, q.y - 14);
-    ctx.fill();
-    ctx.fillStyle = "#9abb8b";
-    ctx.fillRect(q.x - 15, q.y - 33, (30 * Math.max(0, pet.hp)) / 40, 3);
-  }
+
 }
 adventure = createAdventureUI({
   run: () => run,
