@@ -1,0 +1,17 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>青岚渡 · 加载检测</title><style>body{margin:0;padding:22px;background:#172d26;color:#f3ecd5;font:16px/1.65 system-ui,sans-serif}main{max-width:680px;margin:auto}h1{font-size:25px}li{margin:12px 0;overflow-wrap:anywhere}.ok{color:#a9e3ad}.bad{color:#ffb5a5}.small{font-size:12px;color:#c5cbbf;overflow-wrap:anywhere}button,a{display:inline-block;background:#355d4b;color:white;border:1px solid #a9b78c;padding:10px 18px;border-radius:8px;font-size:16px}#agent{padding:12px;background:#203b30}ol{padding-left:24px}</style></head><body><main><h1>青岚渡 · 加载检测</h1><p>这个页面不下载大型游戏引擎。请等待结果出现后，把页面截图发给我，便于定位卡在哪里。结果只显示在本机，不自动上传。</p><ol id="results"></ol><p id="summary">正在检测，请稍等…</p><p class="small" id="agent"></p><button onclick="location.reload()">重新检测</button> <a href="./?v=2">返回游戏</a></main><script>
+(function(){
+ var list=document.getElementById('results'),pending=3,failed=0;
+ function line(label,text,ok){var e=document.createElement('li');e.className=ok?'ok':'bad';e.appendChild(document.createTextNode(label+'：'+text));list.appendChild(e);if(!ok)failed++;}
+ function done(){pending--;if(pending===0)document.getElementById('summary').textContent=failed?'存在未通过项，请把上方结果截图发给我。':'基础检测通过。若游戏仍卡住，请另发游戏停住时的截图；基础通过不代表引擎一定启动成功。';}
+ document.getElementById('agent').textContent='浏览器信息：'+navigator.userAgent+' | 屏幕 '+innerWidth+'×'+innerHeight;
+ line('页面已打开','检测脚本正常执行',true);
+ line('WebAssembly',typeof WebAssembly==='object'?'支持':'不支持，Godot网页版无法启动',typeof WebAssembly==='object');
+ try{var canvas=document.createElement('canvas'),gl=canvas.getContext('webgl2');line('WebGL 2',gl?'支持':'无法创建图形上下文',!!gl);if(gl){var lose=gl.getExtension('WEBGL_lose_context');if(lose)lose.loseContext();}}catch(e){line('WebGL 2',e.message,false);}
+ try{new Function('var a={};return a?.x ?? 0');line('现代脚本语法','支持',true);}catch(e){line('现代脚本语法','当前浏览器内核不兼容引擎脚本',false);}
+ line('持久缓存能力',('serviceWorker' in navigator)?'提供接口；不代表缓存一定成功':'未提供，会走网络加载',true);
+ function request(label,url,method,callback){var x=new XMLHttpRequest(),start=Date.now();x.open(method,url,true);x.timeout=20000;x.onload=function(){if(x.status>=200&&x.status<300){if(callback)callback(x);else line(label,'HTTP '+x.status+'，耗时 '+((Date.now()-start)/1000).toFixed(1)+' 秒',true);}else line(label,'HTTP '+x.status,false);done();};x.onerror=function(){line(label,'网络请求失败',false);done();};x.ontimeout=function(){line(label,'20秒未收到响应',false);done();};x.send();}
+ request('引擎文件连通性（只请求文件头）','index.wasm','HEAD');
+ request('场景文件连通性（只请求文件头）','scene-1d47235c336e49a8.pck','HEAD');
+ request('实际引擎脚本兼容性','index.js','GET',function(x){try{new Function(x.responseText);line('实际引擎脚本兼容性','下载和语法解析通过（未启动引擎）',true);}catch(e){line('实际引擎脚本兼容性',e.message,false);}});
+})();
+</script></body></html>
