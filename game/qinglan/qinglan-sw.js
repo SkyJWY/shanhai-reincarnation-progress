@@ -1,4 +1,4 @@
-const VERSIONS={"index.wasm": "fc74679e3b97f768", "index.audio.worklet.js": "5b476a9c9ce642c0", "index.js": "33c94cb3175f3333", "index.audio.position.worklet.js": "be33985bc7160d6b", "scene-1d47235c336e49a8.pck": "1d47235c336e49a8", "loading.webp": "85ae808289a9e8a7"};
+const VERSIONS={"index.wasm": "fc74679e3b97f768", "index.audio.worklet.js": "5b476a9c9ce642c0", "index.js": "33843b0b7a9e6b7a", "index.audio.position.worklet.js": "be33985bc7160d6b", "scene-1d47235c336e49a8.pck": "1d47235c336e49a8", "loading.webp": "85ae808289a9e8a7"};
 const CACHE='qinglan-runtime-assets-v1';
 self.addEventListener('install',()=>self.skipWaiting());
 self.addEventListener('activate',event=>event.waitUntil(self.clients.claim()));

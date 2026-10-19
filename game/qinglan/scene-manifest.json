@@ -1,0 +1,12 @@
+{
+  "wasmSha256": "1d47235c336e49a88d968d78b27e750ce2bc2e3e615c1e0db12dfb610aa4ea8e",
+  "wasmBytes": 1151308,
+  "compressedBytes": 1130200,
+  "shards": [
+    {
+      "file": "scene-96011a4a7dbde3a51d705c2b3d000ff3a2bf30b407e7526926ddf8b2b32a919e.gzpart",
+      "bytes": 1130200,
+      "sha256": "96011a4a7dbde3a51d705c2b3d000ff3a2bf30b407e7526926ddf8b2b32a919e"
+    }
+  ]
+}

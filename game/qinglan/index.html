@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><title>青岚渡 · 在线试玩</title><link rel="icon" href="index.icon.png"><style>
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;overscroll-behavior:none;touch-action:none;background:#192d26;color:#fff;font-family:system-ui,sans-serif}canvas{display:block;outline:none;touch-action:none}#loading{position:fixed;inset:0;display:grid;place-items:center;background:linear-gradient(#14271d55,#14271dbb),url(loading.webp) center/cover;z-index:10}.card{width:min(90vw,440px);padding:26px;border:1px solid #dfd2a880;background:#172d26ed;border-radius:18px;box-shadow:0 12px 50px #0004}h1{font-size:29px;margin:0 0 10px;color:#eee3bf}p{line-height:1.6;margin:10px 0;font-size:14px}.muted{font-size:12px;color:#c7d0ba}progress{width:100%;height:12px;accent-color:#d8bc76}#retry{display:none;border:1px solid #d8bc76;background:#34594a;color:#fff;padding:12px 22px;border-radius:8px;min-height:44px}#phase{min-height:44px}#preview{color:#d0d6c0;font-size:12px}
-</style></head><body><canvas id="canvas"></canvas><section id="loading"><div class="card"><div id="preview">场景加载预览</div><h1>青岚渡</h1><p id="phase">准备游戏…</p><progress id="progress" max="100"></progress><p id="detail" class="muted">首次需要下载引擎；后续优先使用本机缓存。</p><p class="muted">移动端点地行走 · 电脑 WASD<br>首次下载完成后，仍需片刻初始化。</p><button id="retry" onclick="location.reload()">重新尝试</button></div></section><script>
+</style></head><body><canvas id="canvas"></canvas><section id="loading"><div class="card"><div id="preview">场景加载预览</div><h1>青岚渡</h1><p id="phase">准备游戏…</p><progress id="progress" max="100"></progress><p id="detail" class="muted">首次需要下载引擎；后续优先使用本机缓存。</p><p class="muted">移动端点地行走 · 电脑 WASD<br>首次下载完成后，仍需片刻初始化。</p><button id="retry" onclick="location.reload()">重新尝试</button></div></section><script src="art-download.js?v=5d75d216e1401c35"></script><script>
 window.__cacheHits=[];window.__loadStarted=performance.now();
 const config={"executable": "index", "mainPack": "scene-1d47235c336e49a8.pck", "canvasResizePolicy": 2, "focusCanvas": true, "fileSizes": {"index.wasm": 39514754, "scene-1d47235c336e49a8.pck": 1151308}, "args": [], "gdextensionLibs": []},phase=document.querySelector('#phase'),bar=document.querySelector('#progress'),detail=document.querySelector('#detail');
 async function cacheReady(){
@@ -13,10 +13,32 @@ async function cacheReady(){
 async function boot(){
  await Promise.race([cacheReady(),new Promise(r=>setTimeout(r,1800))]);
  phase.textContent='正在载入引擎和场景…';
- await new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='index.js?v=33c94cb3175f3333';s.onload=resolve;s.onerror=()=>reject(Error('引擎脚本下载失败，请检查网络后重试。'));document.body.appendChild(s);});
+ await new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='engine-runtime-33843b0b7a9e6b7a.js';s.onload=resolve;s.onerror=()=>reject(Error('引擎脚本下载失败，请检查网络后重试。'));document.body.appendChild(s);});
  const missing=Engine.getMissingFeatures({threads:false});if(missing.length)throw Error('当前浏览器缺少 '+missing.join(', ')+'，请尝试系统浏览器。');
  const engine=new Engine(config);
- await engine.startGame({onProgress:(current,total)=>{
+ let sharded=false;
+ if(typeof DecompressionStream==='function'&&crypto.subtle){
+  const raw=await QinglanDownload({"wasmSha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0", "wasmBytes": 39514754, "compressedBytes": 10054758, "shards": [{"file": "engine-af78cbce5666e044f45050f93f321fef4a78ee4a74a7113ab9fc7acd797445bd.gzpart", "bytes": 1048576, "sha256": "af78cbce5666e044f45050f93f321fef4a78ee4a74a7113ab9fc7acd797445bd"}, {"file": "engine-4d0e8d934086cdb461a98e84a51c4d8f54635e8d33561d41f449ec037e833742.gzpart", "bytes": 1048576, "sha256": "4d0e8d934086cdb461a98e84a51c4d8f54635e8d33561d41f449ec037e833742"}, {"file": "engine-3dccb35f94c59d9c5036955db8c4b8656ac80eda0a57d03fd2d6ef7a54f83ce7.gzpart", "bytes": 1048576, "sha256": "3dccb35f94c59d9c5036955db8c4b8656ac80eda0a57d03fd2d6ef7a54f83ce7"}, {"file": "engine-ce6ca8c70d1ca5d8a9606f2de882599f6883b8fe9f54e465d2058d229233132e.gzpart", "bytes": 1048576, "sha256": "ce6ca8c70d1ca5d8a9606f2de882599f6883b8fe9f54e465d2058d229233132e"}, {"file": "engine-01b3a33fcef19bdde8a9845b9a245e09a940c521b5cc3e059f65cde10967143a.gzpart", "bytes": 1048576, "sha256": "01b3a33fcef19bdde8a9845b9a245e09a940c521b5cc3e059f65cde10967143a"}, {"file": "engine-62bfcd2eb5edf4d3397f7986be0fc4319685b29376a6e1f28c78611523e9d90d.gzpart", "bytes": 1048576, "sha256": "62bfcd2eb5edf4d3397f7986be0fc4319685b29376a6e1f28c78611523e9d90d"}, {"file": "engine-c0ec2cc2f7771f1dfd3e8a33a59930f6ada737e518141d3880d1c98cf0a5d0fe.gzpart", "bytes": 1048576, "sha256": "c0ec2cc2f7771f1dfd3e8a33a59930f6ada737e518141d3880d1c98cf0a5d0fe"}, {"file": "engine-8e558e2785d151c1105085cb3dbbe7dfb42a7472afd5b998f22bebc2a436cc57.gzpart", "bytes": 1048576, "sha256": "8e558e2785d151c1105085cb3dbbe7dfb42a7472afd5b998f22bebc2a436cc57"}, {"file": "engine-e08f8d19a584a7981790fd55f71f099727abfcb5bb4b69f74725562c425d572f.gzpart", "bytes": 1048576, "sha256": "e08f8d19a584a7981790fd55f71f099727abfcb5bb4b69f74725562c425d572f"}, {"file": "engine-9567d7c4834650dd8b1aaa3eec032d11d59362c81002f4309ee3d5b6b92816fb.gzpart", "bytes": 617574, "sha256": "9567d7c4834650dd8b1aaa3eec032d11d59362c81002f4309ee3d5b6b92816fb"}]},{onProgress:s=>{
+   window.__downloadStats=s;
+   const mb=n=>(n/1048576).toFixed(2);
+   bar.value=Math.min(100,(s.completed+s.active)/s.total*100);
+   phase.textContent=s.phase==='verify'?'下载完成，正在解压和校验引擎…':s.phase==='initialize'?'校验通过，正在初始化游戏…':'正在下载引擎压缩分片…';
+   detail.textContent='已就绪 '+mb(s.completed+s.active)+' / '+mb(s.total)+' MiB · 实际网络 '+mb(s.networkBytes)+' MiB · '+mb(s.bytesPerSecond)+' MiB/s · 缓存 '+mb(s.cachedBytes)+' MiB';
+  }});
+  await Engine.loadVerifiedBuffer('index',raw);sharded=true;
+  phase.textContent='正在下载并校验场景…';
+  const scene=await QinglanDownload({"wasmSha256": "1d47235c336e49a88d968d78b27e750ce2bc2e3e615c1e0db12dfb610aa4ea8e", "wasmBytes": 1151308, "compressedBytes": 1130200, "shards": [{"file": "scene-96011a4a7dbde3a51d705c2b3d000ff3a2bf30b407e7526926ddf8b2b32a919e.gzpart", "bytes": 1130200, "sha256": "96011a4a7dbde3a51d705c2b3d000ff3a2bf30b407e7526926ddf8b2b32a919e"}]},{onProgress:s=>{
+   phase.textContent=s.phase==='download'?'正在下载场景压缩分片…':'正在校验场景…';
+   bar.value=(s.completed+s.active)/s.total*100;
+   detail.textContent=((s.completed+s.active)/1048576).toFixed(2)+' / '+(s.total/1048576).toFixed(2)+' MiB · '+(s.bytesPerSecond/1048576).toFixed(2)+' MiB/s';
+  }});
+  phase.textContent='下载及校验完成，正在初始化游戏…';bar.removeAttribute('value');
+  await engine.preloadFile(scene,config.mainPack);
+  await engine.init('index');
+  await engine.start({args:['--main-pack',config.mainPack]});
+ }else{phase.textContent='浏览器不支持压缩分片，正在使用兼容下载…';}
+ if(!sharded)await engine.startGame({onProgress:(current,total)=>{
+  if(sharded){phase.textContent='引擎校验通过，正在载入场景并初始化游戏…';return;}
   if(total>0&&current>0){const pct=Math.min(100,Math.floor(current/total*100));bar.value=pct;phase.textContent=pct>=100?'下载完成，正在初始化游戏…':'正在载入引擎和场景：'+pct+'%';}
   detail.textContent=window.__cacheHits.length?'已读取本机缓存；正在准备游戏。':'首次加载需要网络下载，浏览器允许时会自动缓存。';
  }});

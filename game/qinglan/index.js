@@ -891,6 +891,14 @@ const Engine = (function () {
 
 	// Closure compiler exported static methods.
 	SafeEngine['load'] = Engine.load;
+    // Qinglan verified-buffer adapter (no global fetch interception).
+    SafeEngine['loadVerifiedBuffer'] = function(basePath, buffer) {
+        if (loadPromise !== null) throw new Error('Engine already loading');
+        loadPath = basePath;
+        loadPromise = Promise.resolve(new Response(buffer, {headers: {'Content-Type': 'application/wasm'}}));
+        return loadPromise;
+    };
+
 	SafeEngine['unload'] = Engine.unload;
 
 	// Feature-detection utilities.
