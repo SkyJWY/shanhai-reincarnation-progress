@@ -1,8 +1,8 @@
 /* Scoped resumable engine download. No global fetch or user-storage changes. */
 window.QinglanDownload = async function (manifest, options = {}) {
-  const bases = options.bases || ['./', 'https://cdn.jsdelivr.net/gh/SkyJWY/shanhai-reincarnation-progress@17cc2fafa09730d1fa6786fe615243fb82186f63/game/qinglan/', 'https://fastly.jsdelivr.net/gh/SkyJWY/shanhai-reincarnation-progress@17cc2fafa09730d1fa6786fe615243fb82186f63/game/qinglan/'];
+  const bases = [...(options.bases || ['./', 'https://cdn.jsdelivr.net/gh/SkyJWY/shanhai-reincarnation-progress@17cc2fafa09730d1fa6786fe615243fb82186f63/game/qinglan/', 'https://fastly.jsdelivr.net/gh/SkyJWY/shanhai-reincarnation-progress@17cc2fafa09730d1fa6786fe615243fb82186f63/game/qinglan/'])];
   const report = options.onProgress || (() => {});
-  const idleMs = options.idleMs || 5000, deadlineMs = options.deadlineMs || 20000;
+  const idleMs = options.idleMs || 5000, deadlineMs = options.deadlineMs || 45000;
   let cache; try { cache = await caches.open('qinglan-shards-v1-' + new URL('.', location.href).pathname); } catch {}
   const sha = async bytes => Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', bytes)), x => x.toString(16).padStart(2, '0')).join('');
   let completed = 0, networkBytes = 0, cachedBytes = 0;
@@ -23,10 +23,12 @@ window.QinglanDownload = async function (manifest, options = {}) {
     } catch {}
     if (!bytes) {
       const controllers = bases.map(() => new AbortController()), active = bases.map(() => 0);
+      const sourceStarted = performance.now(); let winner;
       const attempts = bases.map(async (base, i) => {
         const controller = controllers[i];
         // Hedge slow first-byte/transfer sources without exceeding three requests.
         await new Promise(r => setTimeout(r, i * (options.hedgeMs ?? 750)));
+        while(i>0 && !controller.signal.aborted && active[0] / Math.max(.1,(performance.now()-sourceStarted)/1000) > 32768) await new Promise(r=>setTimeout(r,250));
         if (controller.signal.aborted) throw Error('superseded');
         let idle, deadline;
         const stop = () => controller.abort();
@@ -45,12 +47,13 @@ window.QinglanDownload = async function (manifest, options = {}) {
           const result = new Uint8Array(count); let offset = 0;
           for (const part of parts) { result.set(part, offset); offset += part.length; }
           if (count !== shard.bytes || await sha(result) !== shard.sha256) throw Error('分片校验失败');
-          return result.buffer;
+          winner=base; return result.buffer;
         } finally { clearTimeout(idle); clearTimeout(deadline); controller.abort(); active[i] = 0; }
       });
       try { bytes = await Promise.any(attempts); }
       catch { throw Error('所有下载线路暂时不可用；已完成分片已保存，请重试。'); }
       finally { controllers.forEach(c => c.abort()); }
+      if(winner){const i=bases.indexOf(winner);bases.splice(i,1);bases.unshift(winner);}
       try { await cache?.put(key, new Response(bytes)); } catch {}
     }
     chunks.push(bytes); completed += bytes.byteLength; emit('download');
