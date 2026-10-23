@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "status": "acquisition-blocked",
-  "note": "本次公开CC0模型采集受执行授权阻断，尚无新增可用模型。游戏继续使用已核验的现有资产，不把其变体计作新模型。",
+  "status": "official-download-quota",
+  "note": "执行授权已恢复，但作者官方模型网盘下载配额耗尽，尚无新增可用模型。游戏继续使用已核验的现有资产，不把其变体计作新模型。",
   "mobs": [],
   "bosses": [],
   "pets": [],
