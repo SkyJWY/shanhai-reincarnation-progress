@@ -1,0 +1,16 @@
+{
+  "name": "Wuxia Chibi Men",
+  "author": "lekkanya.s",
+  "source": "https://www.meshy.ai/3d-models/wuxia-chibi-men-01a0374e-8ec5-76be-bf9d-a45d2ed89d55",
+  "license": "CC0-1.0",
+  "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "provenance": "Pre-existing publicly shared AI-generated Meshy 7 model, not self-modeled and not represented as hand-modeled.",
+  "credit": "Wuxia Chibi Men — lekkanya.s / Meshy, CC0 1.0",
+  "limitations": [
+    "Short tunic rather than flowing Chinese robe",
+    "No clearly visible sword",
+    "Texture/geometry have AI-generated simplification",
+    "Not an exclusive custom-designed character",
+    "Embedded animation clips exist but their playback/deformation quality needs engine review"
+  ]
+}
