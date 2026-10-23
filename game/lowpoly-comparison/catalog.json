@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "assets": [
+    {
+      "id": "hero-low",
+      "category": "hero",
+      "name": "蓝衣少侠 · 减面版",
+      "author": "lekkanya.s",
+      "sourceUrl": "https://www.meshy.ai/3d-models/wuxia-chibi-men-01a0374e-8ec5-76be-bf9d-a45d2ed89d55",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "model": "models/hero-low.glb",
+      "preview": "previews/hero-low.webp",
+      "stats": {
+        "triangles": 1950,
+        "meshes": 1,
+        "bones": 24,
+        "animations": [
+          "Armature|clip0|baselayer"
+        ],
+        "bytes": 1111640,
+        "sha256": "4e4422ce430f70471f243f697834d2a78dcdbfbcaf020bb2c6d983653482ccff"
+      },
+      "fitNotes": "整体网格不超过2000三角面；保留原造型和贴图方向，观察轮廓与细节损失。",
+      "limitations": [
+        "主角原文件中的片段只有单时间点静态姿势，并非行走动作。",
+        "自动减面可能损失脸部、手指、衣褶或毛发边缘；不是手工重拓扑。",
+        "骨骼/片段数量按导出文件核验；存在片段不代表完整动作质量通过。",
+        "只减少几何面数；贴图仍占用下载体积和显存。"
+      ],
+      "moduleMetadata": null,
+      "provenance": "Pre-existing publicly shared AI-generated Meshy 7 model, not self-modeled and not represented as hand-modeled.",
+      "reviewStatus": "独立减面实验 / 未替换原版"
+    },
+    {
+      "id": "hero-original",
+      "category": "hero",
+      "name": "蓝衣少侠 · 原版对照",
+      "author": "lekkanya.s",
+      "sourceUrl": "https://www.meshy.ai/3d-models/wuxia-chibi-men-01a0374e-8ec5-76be-bf9d-a45d2ed89d55",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "model": "../asset-library/assets/hero-wuxia-blue.glb",
+      "preview": "../asset-library/previews/hero-wuxia-blue.webp",
+      "stats": {
+        "triangles": 10352,
+        "meshes": 1,
+        "bones": 24,
+        "animations": [
+          "Armature|clip0|baselayer"
+        ],
+        "bytes": 1516780,
+        "sha256": "6b3d07eb7ac883accec7946f875feb0da6b28cdf779971181d922556538bf643"
+      },
+      "fitNotes": "用户已认可的风格基准；第三方既有AI生成资产。",
+      "limitations": [
+        "主角原文件中的片段只有单时间点静态姿势，并非行走动作。",
+        "Short tunic rather than flowing Chinese robe",
+        "No clearly visible sword",
+        "Texture/geometry have AI-generated simplification",
+        "Not an exclusive custom-designed character",
+        "Embedded animation clips exist but their playback/deformation quality needs engine review"
+      ],
+      "moduleMetadata": null,
+      "provenance": "Pre-existing publicly shared AI-generated Meshy 7 model, not self-modeled and not represented as hand-modeled.",
+      "reviewStatus": "原文件只读引用 / 未修改"
+    },
+    {
+      "id": "fox-low",
+      "category": "pet",
+      "name": "灵狐 · 减面版",
+      "author": "shortelyssa681",
+      "sourceUrl": "https://www.meshy.ai/3d-models/01951ffa-8e1c-74ff-a882-4acaf708e91f",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "model": "models/fox-low.glb",
+      "preview": "previews/fox-low.webp",
+      "stats": {
+        "triangles": 1949,
+        "meshes": 1,
+        "bones": 24,
+        "animations": [
+          "Armature|walking_man|baselayer"
+        ],
+        "bytes": 1021592,
+        "sha256": "d0d9fadbbeb77512b16479699533ae6810276fa5e7c4a03296f5781abc88a2b7"
+      },
+      "fitNotes": "整体网格不超过2000三角面；保留原造型和贴图方向，观察轮廓与细节损失。",
+      "limitations": [
+        "自动减面可能损失脸部、手指、衣褶或毛发边缘；不是手工重拓扑。",
+        "骨骼/片段数量按导出文件核验；存在片段不代表完整动作质量通过。",
+        "只减少几何面数；贴图仍占用下载体积和显存。",
+        "狐狸行走经24fps重采样，动画时长略有变化；不代表完整游戏动作集。"
+      ],
+      "moduleMetadata": null,
+      "provenance": "Pre-existing publicly shared Meshy AI-generated asset; not newly generated, handmade or exclusive.",
+      "reviewStatus": "独立减面实验 / 未替换原版"
+    },
+    {
+      "id": "fox-original",
+      "category": "pet",
+      "name": "灵狐 · 原版对照",
+      "author": "shortelyssa681",
+      "sourceUrl": "https://www.meshy.ai/3d-models/01951ffa-8e1c-74ff-a882-4acaf708e91f",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "model": "../asset-library/assets/fluffy-fox.glb",
+      "preview": "../asset-library/previews/fluffy-fox.webp",
+      "stats": {
+        "triangles": 153209,
+        "meshes": 1,
+        "bones": 24,
+        "animations": [
+          "Armature|walking_man|baselayer"
+        ],
+        "bytes": 7356552,
+        "sha256": "db5c2260cf209eb68e2629f010d885af97dfd1879954c7b8cea51f08a7e0132f"
+      },
+      "fitNotes": "可爱的大头短身橙白狐狸；立耳、大眼、圆脸和毛绒贴图接近获准主角的精细卡通风格。不是特定中国神兽，但适合作为灵宠候选。",
+      "limitations": [
+        "双足拟人狐狸，不是四足狐狸。",
+        "153209三角形偏重，未做减面。",
+        "原作者标题含Pixar Style风格描述；不是Pixar授权资产，也未识别为其具体IP角色。",
+        "公开共享AI生成资产，不是原创手工制作、不是独占。",
+        "含24骨骼与1个walking动画；仅完成静帧导入渲染，未验证动画变形和游戏可用性。",
+        "CC0无权利无瑕疵担保；不声称已审计训练来源或全部第三方权利。"
+      ],
+      "moduleMetadata": null,
+      "provenance": "Pre-existing publicly shared Meshy AI-generated asset; not newly generated, handmade or exclusive.",
+      "reviewStatus": "原文件只读引用 / 未修改"
+    }
+  ],
+  "counts": {
+    "hero": 2,
+    "pet": 2
+  },
+  "gaps": [
+    "独立实验：只比较造型，不替换主场景或资产库。面数统一按三角形统计。"
+  ]
+}
