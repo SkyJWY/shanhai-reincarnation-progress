@@ -1,0 +1,2591 @@
+{
+  "schemaVersion": 1,
+  "title": "山海轮回 · 游戏资产库",
+  "scope": "首批可用资产与模块化样板，不是全部开发内容已齐备",
+  "assets": [
+    {
+      "id": "hero-wuxia-blue",
+      "category": "hero",
+      "name": "蓝衣少侠 / Wuxia Chibi Men",
+      "author": "lekkanya.s",
+      "sourceUrl": "https://www.meshy.ai/3d-models/wuxia-chibi-men-01a0374e-8ec5-76be-bf9d-a45d2ed89d55",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "model": "assets/hero-wuxia-blue.glb",
+      "preview": "previews/hero-wuxia-blue.webp",
+      "stats": {
+        "triangles": 10352,
+        "meshes": 1,
+        "bones": 24,
+        "animations": [
+          "Armature|clip0|baselayer"
+        ],
+        "textures": 2,
+        "bytes": 1516780,
+        "sha256": "6b3d07eb7ac883accec7946f875feb0da6b28cdf779971181d922556538bf643"
+      },
+      "fitNotes": "用户已认可的风格基准；第三方既有AI生成资产。",
+      "limitations": [
+        "Short tunic rather than flowing Chinese robe",
+        "No clearly visible sword",
+        "Texture/geometry have AI-generated simplification",
+        "Not an exclusive custom-designed character",
+        "Embedded animation clips exist but their playback/deformation quality needs engine review"
+      ],
+      "moduleMetadata": null,
+      "provenance": "Pre-existing publicly shared AI-generated Meshy 7 model, not self-modeled and not represented as hand-modeled.",
+      "reviewStatus": "用户已认可"
+    },
+    {
+      "id": "fluffy-fox",
+      "category": "pet",
+      "name": "灵狐候选",
+      "author": "shortelyssa681",
+      "sourceUrl": "https://www.meshy.ai/3d-models/01951ffa-8e1c-74ff-a882-4acaf708e91f",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "model": "assets/fluffy-fox.glb",
+      "preview": "previews/fluffy-fox.webp",
+      "stats": {
+        "triangles": 153209,
+        "meshes": 1,
+        "bones": 24,
+        "animations": [
+          "Armature|walking_man|baselayer"
+        ],
+        "textures": 2,
+        "bytes": 7356552,
+        "sha256": "db5c2260cf209eb68e2629f010d885af97dfd1879954c7b8cea51f08a7e0132f"
+      },
+      "fitNotes": "可爱的大头短身橙白狐狸；立耳、大眼、圆脸和毛绒贴图接近获准主角的精细卡通风格。不是特定中国神兽，但适合作为灵宠候选。",
+      "limitations": [
+        "双足拟人狐狸，不是四足狐狸。",
+        "153209三角形偏重，未做减面。",
+        "原作者标题含Pixar Style风格描述；不是Pixar授权资产，也未识别为其具体IP角色。",
+        "公开共享AI生成资产，不是原创手工制作、不是独占。",
+        "含24骨骼与1个walking动画；仅完成静帧导入渲染，未验证动画变形和游戏可用性。",
+        "CC0无权利无瑕疵担保；不声称已审计训练来源或全部第三方权利。"
+      ],
+      "moduleMetadata": null,
+      "provenance": "Pre-existing publicly shared Meshy AI-generated asset; not newly generated, handmade or exclusive.",
+      "reviewStatus": "首批候选 / 待美术签收"
+    },
+    {
+      "id": "smudge-cat",
+      "category": "pet",
+      "name": "花猫灵宠候选",
+      "author": "killer.jameswick",
+      "sourceUrl": "https://www.meshy.ai/3d-models/0196aa28-e6f5-7319-b09a-c28302b3be78",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "model": "assets/smudge-cat.glb",
+      "preview": "previews/smudge-cat.webp",
+      "stats": {
+        "triangles": 10000,
+        "meshes": 1,
+        "bones": 24,
+        "animations": [
+          "Armature|walking_man|baselayer"
+        ],
+        "textures": 2,
+        "bytes": 1249752,
+        "sha256": "fbdfeb717d7dba8ad2277ce7ddfe9877cee71906c0536d54d10751ca19e05ad7"
+      },
+      "fitNotes": "大头短身、绿色大眼、米白斑纹，圆润可爱；真实渲染可见部分低多边形切面，精细程度低于蓝衣主角但比旧程序人物更接近目标。",
+      "limitations": [
+        "双足拟人猫；手掌较粗糙，身体切面明显。",
+        "没有已验证的四足跟随、跳跃或战斗动作。",
+        "公开共享AI生成资产，不是原创手工制作、不是独占。",
+        "含24骨骼与1个walking动画；仅完成静帧导入渲染，未验证动画变形和游戏可用性。",
+        "CC0无权利无瑕疵担保；不声称已审计训练来源或全部第三方权利。",
+        "作者HTML页面抓取为空；具体资产CC0和作者依据官方匿名public API，未伪称取得第二份网页证据。"
+      ],
+      "moduleMetadata": null,
+      "provenance": "Pre-existing publicly shared Meshy AI-generated asset; not newly generated, handmade or exclusive.",
+      "reviewStatus": "首批候选 / 待美术签收"
+    },
+    {
+      "id": "foundation-floor",
+      "category": "module",
+      "name": "基础地台 / 2m floor",
+      "author": "project-original",
+      "sourceUrl": null,
+      "license": "project-original",
+      "licenseUrl": null,
+      "model": "assets/foundation-floor.glb",
+      "preview": "previews/foundation-floor.webp",
+      "stats": {
+        "triangles": 24,
+        "meshes": 1,
+        "bones": 0,
+        "animations": [],
+        "textures": 0,
+        "bytes": 3472,
+        "sha256": "0fa6eb3df4dae65dcb81573472add18030a395fbe9a93ccdb75b1e5b12484b87"
+      },
+      "fitNotes": "Tile edge-to-edge on 2m bays. Pillars intentionally center on outer corners; plinth is not enlarged.",
+      "limitations": [
+        "Static original geometry; no texture maps, rig or animation. Collision proxies are metadata only, not embedded physics bodies."
+      ],
+      "moduleMetadata": {
+        "coordinateSystem": "right-handed Y-up; +Z front; meters",
+        "gridMeters": 0.1,
+        "structuralBayMeters": 2,
+        "pivot": [
+          0,
+          0,
+          0
+        ],
+        "pivotDescription": "base center, except roof: center of complete roof support plane",
+        "allowedRotationYDegrees": [
+          0,
+          90,
+          180,
+          270
+        ],
+        "scalePolicy": "unit scale only",
+        "bounds": {
+          "min": [
+            -1.0,
+            0.0,
+            -1.0
+          ],
+          "max": [
+            1.0,
+            0.20000000298023224,
+            1.0
+          ]
+        },
+        "dimensions": [
+          2.0,
+          0.20000000298023224,
+          2.0
+        ],
+        "sockets": [
+          {
+            "name": "west",
+            "position": [
+              -1,
+              0.2,
+              0
+            ],
+            "normal": [
+              -1,
+              0,
+              0
+            ],
+            "type": "floor-edge",
+            "width": 2,
+            "height": 0.2
+          },
+          {
+            "name": "east",
+            "position": [
+              1,
+              0.2,
+              0
+            ],
+            "normal": [
+              1,
+              0,
+              0
+            ],
+            "type": "floor-edge",
+            "width": 2,
+            "height": 0.2
+          },
+          {
+            "name": "north",
+            "position": [
+              0,
+              0.2,
+              -1
+            ],
+            "normal": [
+              0,
+              0,
+              -1
+            ],
+            "type": "floor-edge",
+            "width": 2,
+            "height": 0.2
+          },
+          {
+            "name": "south",
+            "position": [
+              0,
+              0.2,
+              1
+            ],
+            "normal": [
+              0,
+              0,
+              1
+            ],
+            "type": "floor-edge",
+            "width": 2,
+            "height": 0.2
+          },
+          {
+            "name": "column--1--1",
+            "position": [
+              -1,
+              0.2,
+              -1
+            ],
+            "normal": [
+              0,
+              1,
+              0
+            ],
+            "type": "post-seat",
+            "width": 0.16,
+            "height": 0.16
+          },
+          {
+            "name": "column--1-1",
+            "position": [
+              -1,
+              0.2,
+              1
+            ],
+            "normal": [
+              0,
+              1,
+              0
+            ],
+            "type": "post-seat",
+            "width": 0.16,
+            "height": 0.16
+          },
+          {
+            "name": "column-1--1",
+            "position": [
+              1,
+              0.2,
+              -1
+            ],
+            "normal": [
+              0,
+              1,
+              0
+            ],
+            "type": "post-seat",
+            "width": 0.16,
+            "height": 0.16
+          },
+          {
+            "name": "column-1-1",
+            "position": [
+              1,
+              0.2,
+              1
+            ],
+            "normal": [
+              0,
+              1,
+              0
+            ],
+            "type": "post-seat",
+            "width": 0.16,
+            "height": 0.16
+          },
+          {
+            "name": "panel",
+            "position": [
+              0,
+              0.2,
+              0
+            ],
+            "normal": [
+              0,
+              1,
+              0
+            ],
+            "type": "wall-seat",
+            "width": 2,
+            "height": 0.16
+          },
+          {
+            "name": "stairs",
+            "position": [
+              0,
+              0.2,
+              1
+            ],
+            "normal": [
+              0,
+              0,
+              1
+            ],
+            "type": "stair-landing",
+            "width": 1.2,
+            "height": 0.2
+          }
+        ],
+        "collisionProxies": [
+          {
+            "shape": "box",
+            "center": [
+              0,
+              0.1,
+              0
+            ],
+            "size": [
+              2,
+              0.2,
+              2
+            ],
+            "rotationYDegrees": 0
+          }
+        ],
+        "connectionPolicy": "Match socket type, dimensions, coincident positions and opposing normals; explicit adaptor required, not generic WFC ready."
+      },
+      "provenance": "项目原创场景模块，不是第三方开放许可角色。",
+      "reviewStatus": "首批候选 / 待美术签收"
+    },
+    {
+      "id": "wall-plain",
+      "category": "module",
+      "name": "素墙 / plaster panel",
+      "author": "project-original",
+      "sourceUrl": null,
+      "license": "project-original",
+      "licenseUrl": null,
+      "model": "assets/wall-plain.glb",
+      "preview": "previews/wall-plain.webp",
+      "stats": {
+        "triangles": 72,
+        "meshes": 1,
+        "bones": 0,
+        "animations": [],
+        "textures": 0,
+        "bytes": 7864,
+        "sha256": "8fa93b8bbb045d40d852838e65592fcbf2639071402ff518af4f1f288abb24ae"
+      },
+      "fitNotes": "",
+      "limitations": [
+        "Static original geometry; no texture maps, rig or animation. Collision proxies are metadata only, not embedded physics bodies."
+      ],
+      "moduleMetadata": {
+        "coordinateSystem": "right-handed Y-up; +Z front; meters",
+        "gridMeters": 0.1,
+        "structuralBayMeters": 2,
+        "pivot": [
+          0,
+          0,
+          0
+        ],
+        "pivotDescription": "base center, except roof: center of complete roof support plane",
+        "allowedRotationYDegrees": [
+          0,
+          90,
+          180,
+          270
+        ],
+        "scalePolicy": "unit scale only",
+        "bounds": {
+          "min": [
+            -1.0,
+            -2.2351741790771484e-08,
+            -0.07999999821186066
+          ],
+          "max": [
+            1.0,
+            2.4000000953674316,
+            0.07999999821186066
+          ]
+        },
+        "dimensions": [
+          2.0,
+          2.4000001177191734,
+          0.1599999964237213
+        ],
+        "sockets": [
+          {
+            "name": "left",
+            "position": [
+              -1,
+              1.2,
+              0
+            ],
+            "normal": [
+              -1,
+              0,
+              0
+            ],
+            "type": "wall-edge",
+            "width": 0.16,
+            "height": 2.4
+          },
+          {
+            "name": "right",
+            "position": [
+              1,
+              1.2,
+              0
+            ],
+            "normal": [
+              1,
+              0,
+              0
+            ],
+            "type": "wall-edge",
+            "width": 0.16,
+            "height": 2.4
+          },
+          {
+            "name": "base",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "normal": [
+              0,
+              -1,
+              0
+            ],
+            "type": "wall-seat",
+            "width": 2,
+            "height": 0.16
+          },
+          {
+            "name": "top",
+            "position": [
+              0,
+              2.4,
+              0
+            ],
+            "normal": [
+              0,
+              1,
+              0
+            ],
+            "type": "wall-seat",
+            "width": 2,
+            "height": 0.16
+          }
+        ],
+        "collisionProxies": [
+          {
+            "shape": "box",
+            "center": [
+              0,
+              1.2,
+              0
+            ],
+            "size": [
+              2,
+              2.4,
+              0.16
+            ],
+            "rotationYDegrees": 0
+          }
+        ],
+        "connectionPolicy": "Match socket type, dimensions, coincident positions and opposing normals; explicit adaptor required, not generic WFC ready."
+      },
+      "provenance": "项目原创场景模块，不是第三方开放许可角色。",
+      "reviewStatus": "首批候选 / 待美术签收"
+    },
+    {
+      "id": "wall-window",
+      "category": "module",
+      "name": "格窗墙 / open lattice",
+      "author": "project-original",
+      "sourceUrl": null,
+      "license": "project-original",
+      "licenseUrl": null,
+      "model": "assets/wall-window.glb",
+      "preview": "previews/wall-window.webp",
+      "stats": {
+        "triangles": 204,
+        "meshes": 1,
+        "bones": 0,
+        "animations": [],
+        "textures": 0,
+        "bytes": 16412,
+        "sha256": "23984f411d1d33c8cf6b1fb6ba58503ee2f0400e19e897bd0113d032abb985a3"
+      },
+      "fitNotes": "Window is open geometry without glass; conservative collision blocks the window.",
+      "limitations": [
+        "Static original geometry; no texture maps, rig or animation. Collision proxies are metadata only, not embedded physics bodies."
+      ],
+      "moduleMetadata": {
+        "coordinateSystem": "right-handed Y-up; +Z front; meters",
+        "gridMeters": 0.1,
+        "structuralBayMeters": 2,
+        "pivot": [
+          0,
+          0,
+          0
+        ],
+        "pivotDescription": "base center, except roof: center of complete roof support plane",
+        "allowedRotationYDegrees": [
+          0,
+          90,
+          180,
+          270
+        ],
+        "scalePolicy": "unit scale only",
+        "bounds": {
+          "min": [
+            -1.0,
+            -2.2351741790771484e-08,
+            -0.09000000357627869
+          ],
+          "max": [
+            1.0,
+            2.4000000953674316,
+            0.09000000357627869
+          ]
+        },
+        "dimensions": [
+          2.0,
+          2.4000001177191734,
+          0.18000000715255737
+        ],
+        "sockets": [
+          {
+            "name": "left",
+            "position": [
+              -1,
+              1.2,
+              0
+            ],
+            "normal": [
+              -1,
+              0,
+              0
+            ],
+            "type": "wall-edge",
+            "width": 0.16,
+            "height": 2.4
+          },
+          {
+            "name": "right",
+            "position": [
+              1,
+              1.2,
+              0
+            ],
+            "normal": [
+              1,
+              0,
+              0
+            ],
+            "type": "wall-edge",
+            "width": 0.16,
+            "height": 2.4
+          },
+          {
+            "name": "base",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "normal": [
+              0,
+              -1,
+              0
+            ],
+            "type": "wall-seat",
+            "width": 2,
+            "height": 0.16
+          },
+          {
+            "name": "top",
+            "position": [
+              0,
+              2.4,
+              0
+            ],
+            "normal": [
+              0,
+              1,
+              0
+            ],
+            "type": "wall-seat",
+            "width": 2,
+            "height": 0.16
+          }
+        ],
+        "collisionProxies": [
+          {
+            "shape": "box",
+            "center": [
+              0,
+              1.2,
+              0
+            ],
+            "size": [
+              2,
+              2.4,
+              0.16
+            ],
+            "rotationYDegrees": 0
+          }
+        ],
+        "connectionPolicy": "Match socket type, dimensions, coincident positions and opposing normals; explicit adaptor required, not generic WFC ready."
+      },
+      "provenance": "项目原创场景模块，不是第三方开放许可角色。",
+      "reviewStatus": "首批候选 / 待美术签收"
+    },
+    {
+      "id": "doorway",
+      "category": "module",
+      "name": "通行门洞 / doorway",
+      "author": "project-original",
+      "sourceUrl": null,
+      "license": "project-original",
+      "licenseUrl": null,
+      "model": "assets/doorway.glb",
+      "preview": "previews/doorway.webp",
+      "stats": {
+        "triangles": 120,
+        "meshes": 1,
+        "bones": 0,
+        "animations": [],
+        "textures": 0,
+        "bytes": 11052,
+        "sha256": "7c00c144849f977dffe85bdb3d53bc516ffa16a821159a0f6a663f7350d6b19e"
+      },
+      "fitNotes": "Clear opening approx 1.0m wide × 1.94m tall. No door leaf.",
+      "limitations": [
+        "Static original geometry; no texture maps, rig or animation. Collision proxies are metadata only, not embedded physics bodies."
+      ],
+      "moduleMetadata": {
+        "coordinateSystem": "right-handed Y-up; +Z front; meters",
+        "gridMeters": 0.1,
+        "structuralBayMeters": 2,
+        "pivot": [
+          0,
+          0,
+          0
+        ],
+        "pivotDescription": "base center, except roof: center of complete roof support plane",
+        "allowedRotationYDegrees": [
+          0,
+          90,
+          180,
+          270
+        ],
+        "scalePolicy": "unit scale only",
+        "bounds": {
+          "min": [
+            -1.0,
+            0.0,
+            -0.10000000149011612
+          ],
+          "max": [
+            1.0,
+            2.4000000953674316,
+            0.10000000149011612
+          ]
+        },
+        "dimensions": [
+          2.0,
+          2.4000000953674316,
+          0.20000000298023224
+        ],
+        "sockets": [
+          {
+            "name": "left",
+            "position": [
+              -1,
+              1.2,
+              0
+            ],
+            "normal": [
+              -1,
+              0,
+              0
+            ],
+            "type": "wall-edge",
+            "width": 0.16,
+            "height": 2.4
+          },
+          {
+            "name": "right",
+            "position": [
+              1,
+              1.2,
+              0
+            ],
+            "normal": [
+              1,
+              0,
+              0
+            ],
+            "type": "wall-edge",
+            "width": 0.16,
+            "height": 2.4
+          },
+          {
+            "name": "base",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "normal": [
+              0,
+              -1,
+              0
+            ],
+            "type": "wall-seat",
+            "width": 2,
+            "height": 0.16
+          },
+          {
+            "name": "top",
+            "position": [
+              0,
+              2.4,
+              0
+            ],
+            "normal": [
+              0,
+              1,
+              0
+            ],
+            "type": "wall-seat",
+            "width": 2,
+            "height": 0.16
+          }
+        ],
+        "collisionProxies": [
+          {
+            "shape": "box",
+            "center": [
+              -0.75,
+              1.2,
+              0
+            ],
+            "size": [
+              0.5,
+              2.4,
+              0.2
+            ],
+            "rotationYDegrees": 0
+          },
+          {
+            "shape": "box",
+            "center": [
+              0.75,
+              1.2,
+              0
+            ],
+            "size": [
+              0.5,
+              2.4,
+              0.2
+            ],
+            "rotationYDegrees": 0
+          },
+          {
+            "shape": "box",
+            "center": [
+              0,
+              2.2,
+              0
+            ],
+            "size": [
+              1,
+              0.4,
+              0.2
+            ],
+            "rotationYDegrees": 0
+          }
+        ],
+        "connectionPolicy": "Match socket type, dimensions, coincident positions and opposing normals; explicit adaptor required, not generic WFC ready."
+      },
+      "provenance": "项目原创场景模块，不是第三方开放许可角色。",
+      "reviewStatus": "首批候选 / 待美术签收"
+    },
+    {
+      "id": "pillar",
+      "category": "module",
+      "name": "木柱 / 2.4m post",
+      "author": "project-original",
+      "sourceUrl": null,
+      "license": "project-original",
+      "licenseUrl": null,
+      "model": "assets/pillar.glb",
+      "preview": "previews/pillar.webp",
+      "stats": {
+        "triangles": 80,
+        "meshes": 1,
+        "bones": 0,
+        "animations": [],
+        "textures": 0,
+        "bytes": 8620,
+        "sha256": "90f59f9ead5aed18674795e32b782355ede169fbc918f72d4559ea269a8ac341"
+      },
+      "fitNotes": "",
+      "limitations": [
+        "Static original geometry; no texture maps, rig or animation. Collision proxies are metadata only, not embedded physics bodies."
+      ],
+      "moduleMetadata": {
+        "coordinateSystem": "right-handed Y-up; +Z front; meters",
+        "gridMeters": 0.1,
+        "structuralBayMeters": 2,
+        "pivot": [
+          0,
+          0,
+          0
+        ],
+        "pivotDescription": "base center, except roof: center of complete roof support plane",
+        "allowedRotationYDegrees": [
+          0,
+          90,
+          180,
+          270
+        ],
+        "scalePolicy": "unit scale only",
+        "bounds": {
+          "min": [
+            -0.14000000059604645,
+            0.0,
+            -0.14000000059604645
+          ],
+          "max": [
+            0.14000000059604645,
+            2.4000000953674316,
+            0.14000000059604645
+          ]
+        },
+        "dimensions": [
+          0.2800000011920929,
+          2.4000000953674316,
+          0.2800000011920929
+        ],
+        "sockets": [
+          {
+            "name": "base",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "normal": [
+              0,
+              -1,
+              0
+            ],
+            "type": "post-seat",
+            "width": 0.16,
+            "height": 0.16
+          },
+          {
+            "name": "top",
+            "position": [
+              0,
+              2.4,
+              0
+            ],
+            "normal": [
+              0,
+              1,
+              0
+            ],
+            "type": "post-seat",
+            "width": 0.16,
+            "height": 0.16
+          }
+        ],
+        "collisionProxies": [
+          {
+            "shape": "box",
+            "center": [
+              0,
+              1.2,
+              0
+            ],
+            "size": [
+              0.28,
+              2.4,
+              0.28
+            ],
+            "rotationYDegrees": 0
+          }
+        ],
+        "connectionPolicy": "Match socket type, dimensions, coincident positions and opposing normals; explicit adaptor required, not generic WFC ready."
+      },
+      "provenance": "项目原创场景模块，不是第三方开放许可角色。",
+      "reviewStatus": "首批候选 / 待美术签收"
+    },
+    {
+      "id": "beam",
+      "category": "module",
+      "name": "横梁 / 2m beam",
+      "author": "project-original",
+      "sourceUrl": null,
+      "license": "project-original",
+      "licenseUrl": null,
+      "model": "assets/beam.glb",
+      "preview": "previews/beam.webp",
+      "stats": {
+        "triangles": 24,
+        "meshes": 1,
+        "bones": 0,
+        "animations": [],
+        "textures": 0,
+        "bytes": 3568,
+        "sha256": "50e1283d06bc0c2cd8dc8d4dba84875908dcf130de23cdc16f825a60c128e26d"
+      },
+      "fitNotes": "End seats share column capitals in the demonstrated pavilion.",
+      "limitations": [
+        "Static original geometry; no texture maps, rig or animation. Collision proxies are metadata only, not embedded physics bodies."
+      ],
+      "moduleMetadata": {
+        "coordinateSystem": "right-handed Y-up; +Z front; meters",
+        "gridMeters": 0.1,
+        "structuralBayMeters": 2,
+        "pivot": [
+          0,
+          0,
+          0
+        ],
+        "pivotDescription": "base center, except roof: center of complete roof support plane",
+        "allowedRotationYDegrees": [
+          0,
+          90,
+          180,
+          270
+        ],
+        "scalePolicy": "unit scale only",
+        "bounds": {
+          "min": [
+            -1.0,
+            0.0,
+            -0.09000000357627869
+          ],
+          "max": [
+            1.0,
+            0.20000000298023224,
+            0.10499999672174454
+          ]
+        },
+        "dimensions": [
+          2.0,
+          0.20000000298023224,
+          0.19500000029802322
+        ],
+        "sockets": [
+          {
+            "name": "left-seat",
+            "position": [
+              -1,
+              0,
+              0
+            ],
+            "normal": [
+              0,
+              -1,
+              0
+            ],
+            "type": "post-seat",
+            "width": 0.16,
+            "height": 0.16
+          },
+          {
+            "name": "right-seat",
+            "position": [
+              1,
+              0,
+              0
+            ],
+            "normal": [
+              0,
+              -1,
+              0
+            ],
+            "type": "post-seat",
+            "width": 0.16,
+            "height": 0.16
+          },
+          {
+            "name": "roof",
+            "position": [
+              0,
+              0.2,
+              0
+            ],
+            "normal": [
+              0,
+              1,
+              0
+            ],
+            "type": "roof-seat",
+            "width": 2,
+            "height": 0.18
+          }
+        ],
+        "collisionProxies": [
+          {
+            "shape": "box",
+            "center": [
+              0,
+              0.1,
+              0
+            ],
+            "size": [
+              2,
+              0.2,
+              0.2
+            ],
+            "rotationYDegrees": 0
+          }
+        ],
+        "connectionPolicy": "Match socket type, dimensions, coincident positions and opposing normals; explicit adaptor required, not generic WFC ready."
+      },
+      "provenance": "项目原创场景模块，不是第三方开放许可角色。",
+      "reviewStatus": "首批候选 / 待美术签收"
+    },
+    {
+      "id": "roof-section",
+      "category": "module",
+      "name": "翘檐屋面 / hip quadrant",
+      "author": "project-original",
+      "sourceUrl": null,
+      "license": "project-original",
+      "licenseUrl": null,
+      "model": "assets/roof-section.glb",
+      "preview": "previews/roof-section.webp",
+      "stats": {
+        "triangles": 3820,
+        "meshes": 1,
+        "bones": 0,
+        "animations": [],
+        "textures": 0,
+        "bytes": 242992,
+        "sha256": "2dc74bd3dfe06fdef02768bb8c080701c4e9fbedf1a64c69f668134e52333405"
+      },
+      "fitNotes": "Four quadrants at shared origin with 0/90/180/270° close into a 3m square hip roof. Roof collision is intentionally conservative, NOT walkable; hip ports mark mating planes, not physical trim centers.",
+      "limitations": [
+        "Static original geometry; no texture maps, rig or animation. Collision proxies are metadata only, not embedded physics bodies."
+      ],
+      "moduleMetadata": {
+        "coordinateSystem": "right-handed Y-up; +Z front; meters",
+        "gridMeters": 0.1,
+        "structuralBayMeters": 2,
+        "pivot": [
+          0,
+          0,
+          0
+        ],
+        "pivotDescription": "base center, except roof: center of complete roof support plane",
+        "allowedRotationYDegrees": [
+          0,
+          90,
+          180,
+          270
+        ],
+        "scalePolicy": "unit scale only",
+        "bounds": {
+          "min": [
+            -1.5092300176620483,
+            -0.07000000774860382,
+            -0.020922064781188965
+          ],
+          "max": [
+            1.5190918445587158,
+            0.9425533413887024,
+            1.5250000953674316
+          ]
+        },
+        "dimensions": [
+          3.028321862220764,
+          1.0125533491373062,
+          1.5459221601486206
+        ],
+        "sockets": [
+          {
+            "name": "support",
+            "position": [
+              0,
+              0,
+              1
+            ],
+            "normal": [
+              0,
+              -1,
+              0
+            ],
+            "type": "roof-seat",
+            "width": 2,
+            "height": 0.18
+          },
+          {
+            "name": "hip-left",
+            "position": [
+              -0.75,
+              0.306,
+              0.75
+            ],
+            "normal": [
+              -0.707106781,
+              0,
+              -0.707106781
+            ],
+            "type": "roof-hip",
+            "width": 2.12132,
+            "height": 0.07
+          },
+          {
+            "name": "hip-right",
+            "position": [
+              0.75,
+              0.306,
+              0.75
+            ],
+            "normal": [
+              0.707106781,
+              0,
+              -0.707106781
+            ],
+            "type": "roof-hip",
+            "width": 2.12132,
+            "height": 0.07
+          },
+          {
+            "name": "apex",
+            "position": [
+              0,
+              0.9,
+              0
+            ],
+            "normal": [
+              0,
+              1,
+              0
+            ],
+            "type": "roof-finial",
+            "width": 0.16,
+            "height": 0.16
+          }
+        ],
+        "collisionProxies": [
+          {
+            "shape": "box",
+            "center": [
+              0,
+              0.45,
+              0.75
+            ],
+            "size": [
+              3,
+              1.04,
+              1.5
+            ],
+            "rotationYDegrees": 0
+          }
+        ],
+        "connectionPolicy": "Match socket type, dimensions, coincident positions and opposing normals; explicit adaptor required, not generic WFC ready."
+      },
+      "provenance": "项目原创场景模块，不是第三方开放许可角色。",
+      "reviewStatus": "首批候选 / 待美术签收"
+    },
+    {
+      "id": "roof-ridge-cap",
+      "category": "module",
+      "name": "宝顶 / ridge finial",
+      "author": "project-original",
+      "sourceUrl": null,
+      "license": "project-original",
+      "licenseUrl": null,
+      "model": "assets/roof-ridge-cap.glb",
+      "preview": "previews/roof-ridge-cap.webp",
+      "stats": {
+        "triangles": 168,
+        "meshes": 1,
+        "bones": 0,
+        "animations": [],
+        "textures": 0,
+        "bytes": 14296,
+        "sha256": "4cfd037bbd5531fd4c7a3ec59d837c548391591675a19ccce6097ca9a73aca67"
+      },
+      "fitNotes": "Central cap for the four-section roof; not a long ridge or arbitrary roof-corner solver.",
+      "limitations": [
+        "Static original geometry; no texture maps, rig or animation. Collision proxies are metadata only, not embedded physics bodies."
+      ],
+      "moduleMetadata": {
+        "coordinateSystem": "right-handed Y-up; +Z front; meters",
+        "gridMeters": 0.1,
+        "structuralBayMeters": 2,
+        "pivot": [
+          0,
+          0,
+          0
+        ],
+        "pivotDescription": "base center, except roof: center of complete roof support plane",
+        "allowedRotationYDegrees": [
+          0,
+          90,
+          180,
+          270
+        ],
+        "scalePolicy": "unit scale only",
+        "bounds": {
+          "min": [
+            -0.10000000149011612,
+            0.0,
+            -0.10000000149011612
+          ],
+          "max": [
+            0.10000000149011612,
+            0.32500001788139343,
+            0.10000000149011612
+          ]
+        },
+        "dimensions": [
+          0.20000000298023224,
+          0.32500001788139343,
+          0.20000000298023224
+        ],
+        "sockets": [
+          {
+            "name": "base",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "normal": [
+              0,
+              -1,
+              0
+            ],
+            "type": "roof-finial",
+            "width": 0.16,
+            "height": 0.16
+          }
+        ],
+        "collisionProxies": [
+          {
+            "shape": "box",
+            "center": [
+              0,
+              0.16,
+              0
+            ],
+            "size": [
+              0.2,
+              0.33,
+              0.2
+            ],
+            "rotationYDegrees": 0
+          }
+        ],
+        "connectionPolicy": "Match socket type, dimensions, coincident positions and opposing normals; explicit adaptor required, not generic WFC ready."
+      },
+      "provenance": "项目原创场景模块，不是第三方开放许可角色。",
+      "reviewStatus": "首批候选 / 待美术签收"
+    },
+    {
+      "id": "stair-segment",
+      "category": "module",
+      "name": "双级台阶 / 0.2m rise",
+      "author": "project-original",
+      "sourceUrl": null,
+      "license": "project-original",
+      "licenseUrl": null,
+      "model": "assets/stair-segment.glb",
+      "preview": "previews/stair-segment.webp",
+      "stats": {
+        "triangles": 24,
+        "meshes": 1,
+        "bones": 0,
+        "animations": [],
+        "textures": 0,
+        "bytes": 3592,
+        "sha256": "24b1201b4d25c525b61c9da59f36e898e608d89476fe5cd5f91048eb6970fbcb"
+      },
+      "fitNotes": "2 × 0.1m risers. Landing requires a designated 1.2m stair port or manual placement; floor-edge is not automatically equivalent.",
+      "limitations": [
+        "Static original geometry; no texture maps, rig or animation. Collision proxies are metadata only, not embedded physics bodies."
+      ],
+      "moduleMetadata": {
+        "coordinateSystem": "right-handed Y-up; +Z front; meters",
+        "gridMeters": 0.1,
+        "structuralBayMeters": 2,
+        "pivot": [
+          0,
+          0,
+          0
+        ],
+        "pivotDescription": "base center, except roof: center of complete roof support plane",
+        "allowedRotationYDegrees": [
+          0,
+          90,
+          180,
+          270
+        ],
+        "scalePolicy": "unit scale only",
+        "bounds": {
+          "min": [
+            -0.6000000238418579,
+            0.0,
+            -0.30000001192092896
+          ],
+          "max": [
+            0.6000000238418579,
+            0.20000000298023224,
+            0.30000001192092896
+          ]
+        },
+        "dimensions": [
+          1.2000000476837158,
+          0.20000000298023224,
+          0.6000000238418579
+        ],
+        "sockets": [
+          {
+            "name": "top",
+            "position": [
+              0,
+              0.2,
+              -0.3
+            ],
+            "normal": [
+              0,
+              0,
+              -1
+            ],
+            "type": "stair-landing",
+            "width": 1.2,
+            "height": 0.2
+          },
+          {
+            "name": "bottom",
+            "position": [
+              0,
+              0,
+              0.3
+            ],
+            "normal": [
+              0,
+              0,
+              1
+            ],
+            "type": "stair-landing",
+            "width": 1.2,
+            "height": 0.2
+          }
+        ],
+        "collisionProxies": [
+          {
+            "shape": "box",
+            "center": [
+              0,
+              0.05,
+              0
+            ],
+            "size": [
+              1.2,
+              0.1,
+              0.6
+            ],
+            "rotationYDegrees": 0
+          },
+          {
+            "shape": "box",
+            "center": [
+              0,
+              0.15,
+              -0.15
+            ],
+            "size": [
+              1.2,
+              0.1,
+              0.3
+            ],
+            "rotationYDegrees": 0
+          }
+        ],
+        "connectionPolicy": "Match socket type, dimensions, coincident positions and opposing normals; explicit adaptor required, not generic WFC ready."
+      },
+      "provenance": "项目原创场景模块，不是第三方开放许可角色。",
+      "reviewStatus": "首批候选 / 待美术签收"
+    },
+    {
+      "id": "bridge-deck",
+      "category": "module",
+      "name": "桥面 / 2m span",
+      "author": "project-original",
+      "sourceUrl": null,
+      "license": "project-original",
+      "licenseUrl": null,
+      "model": "assets/bridge-deck.glb",
+      "preview": "previews/bridge-deck.webp",
+      "stats": {
+        "triangles": 168,
+        "meshes": 1,
+        "bones": 0,
+        "animations": [],
+        "textures": 0,
+        "bytes": 13800,
+        "sha256": "03f5153c6e76641a7ec4942d90224ee3734c9bef40e668252e80121277fd1c98"
+      },
+      "fitNotes": "Straight modular deck; decorative stringers are not structural engineering. 4mm plank gaps are bridged by collision.",
+      "limitations": [
+        "Static original geometry; no texture maps, rig or animation. Collision proxies are metadata only, not embedded physics bodies."
+      ],
+      "moduleMetadata": {
+        "coordinateSystem": "right-handed Y-up; +Z front; meters",
+        "gridMeters": 0.1,
+        "structuralBayMeters": 2,
+        "pivot": [
+          0,
+          0,
+          0
+        ],
+        "pivotDescription": "base center, except roof: center of complete roof support plane",
+        "allowedRotationYDegrees": [
+          0,
+          90,
+          180,
+          270
+        ],
+        "scalePolicy": "unit scale only",
+        "bounds": {
+          "min": [
+            -1.0499999523162842,
+            0.0,
+            -1.0
+          ],
+          "max": [
+            1.0499999523162842,
+            0.20000000298023224,
+            1.0
+          ]
+        },
+        "dimensions": [
+          2.0999999046325684,
+          0.20000000298023224,
+          2.0
+        ],
+        "sockets": [
+          {
+            "name": "start",
+            "position": [
+              0,
+              0.2,
+              -1
+            ],
+            "normal": [
+              0,
+              0,
+              -1
+            ],
+            "type": "deck-edge",
+            "width": 2,
+            "height": 0.2
+          },
+          {
+            "name": "end",
+            "position": [
+              0,
+              0.2,
+              1
+            ],
+            "normal": [
+              0,
+              0,
+              1
+            ],
+            "type": "deck-edge",
+            "width": 2,
+            "height": 0.2
+          },
+          {
+            "name": "rail-left",
+            "position": [
+              -1,
+              0.2,
+              0
+            ],
+            "normal": [
+              0,
+              1,
+              0
+            ],
+            "type": "rail-seat",
+            "width": 2,
+            "height": 0.12
+          },
+          {
+            "name": "rail-right",
+            "position": [
+              1,
+              0.2,
+              0
+            ],
+            "normal": [
+              0,
+              1,
+              0
+            ],
+            "type": "rail-seat",
+            "width": 2,
+            "height": 0.12
+          }
+        ],
+        "collisionProxies": [
+          {
+            "shape": "box",
+            "center": [
+              0,
+              0.1,
+              0
+            ],
+            "size": [
+              2.1,
+              0.2,
+              2
+            ],
+            "rotationYDegrees": 0
+          }
+        ],
+        "connectionPolicy": "Match socket type, dimensions, coincident positions and opposing normals; explicit adaptor required, not generic WFC ready."
+      },
+      "provenance": "项目原创场景模块，不是第三方开放许可角色。",
+      "reviewStatus": "首批候选 / 待美术签收"
+    },
+    {
+      "id": "bridge-rail",
+      "category": "module",
+      "name": "桥栏 / repeatable rail",
+      "author": "project-original",
+      "sourceUrl": null,
+      "license": "project-original",
+      "licenseUrl": null,
+      "model": "assets/bridge-rail.glb",
+      "preview": "previews/bridge-rail.webp",
+      "stats": {
+        "triangles": 108,
+        "meshes": 1,
+        "bones": 0,
+        "animations": [],
+        "textures": 0,
+        "bytes": 10276,
+        "sha256": "ac2e24d47d958ca8959b53be5e513c32413ddcfb24d83e2499abcea2ec3e6a04"
+      },
+      "fitNotes": "Half-depth posts at both ends join without duplicate geometry. Open bridge ends retain visibly thinner half-posts; add a dedicated terminal-post asset in a future expansion.",
+      "limitations": [
+        "Static original geometry; no texture maps, rig or animation. Collision proxies are metadata only, not embedded physics bodies."
+      ],
+      "moduleMetadata": {
+        "coordinateSystem": "right-handed Y-up; +Z front; meters",
+        "gridMeters": 0.1,
+        "structuralBayMeters": 2,
+        "pivot": [
+          0,
+          0,
+          0
+        ],
+        "pivotDescription": "base center, except roof: center of complete roof support plane",
+        "allowedRotationYDegrees": [
+          0,
+          90,
+          180,
+          270
+        ],
+        "scalePolicy": "unit scale only",
+        "bounds": {
+          "min": [
+            -0.10000000149011612,
+            0.0,
+            -1.0
+          ],
+          "max": [
+            0.10000000149011612,
+            0.9600000381469727,
+            1.0
+          ]
+        },
+        "dimensions": [
+          0.20000000298023224,
+          0.9600000381469727,
+          2.0
+        ],
+        "sockets": [
+          {
+            "name": "base",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "normal": [
+              0,
+              -1,
+              0
+            ],
+            "type": "rail-seat",
+            "width": 2,
+            "height": 0.12
+          },
+          {
+            "name": "start",
+            "position": [
+              0,
+              0.5,
+              -1
+            ],
+            "normal": [
+              0,
+              0,
+              -1
+            ],
+            "type": "rail-edge",
+            "width": 0.12,
+            "height": 0.9
+          },
+          {
+            "name": "end",
+            "position": [
+              0,
+              0.5,
+              1
+            ],
+            "normal": [
+              0,
+              0,
+              1
+            ],
+            "type": "rail-edge",
+            "width": 0.12,
+            "height": 0.9
+          }
+        ],
+        "collisionProxies": [
+          {
+            "shape": "box",
+            "center": [
+              0,
+              0.48,
+              0
+            ],
+            "size": [
+              0.2,
+              0.96,
+              2
+            ],
+            "rotationYDegrees": 0
+          }
+        ],
+        "connectionPolicy": "Match socket type, dimensions, coincident positions and opposing normals; explicit adaptor required, not generic WFC ready."
+      },
+      "provenance": "项目原创场景模块，不是第三方开放许可角色。",
+      "reviewStatus": "首批候选 / 待美术签收"
+    },
+    {
+      "id": "rock-transition",
+      "category": "module",
+      "name": "岸石 / terrain transition",
+      "author": "project-original",
+      "sourceUrl": null,
+      "license": "project-original",
+      "licenseUrl": null,
+      "model": "assets/rock-transition.glb",
+      "preview": "previews/rock-transition.webp",
+      "stats": {
+        "triangles": 60,
+        "meshes": 1,
+        "bones": 0,
+        "animations": [],
+        "textures": 0,
+        "bytes": 7364,
+        "sha256": "4a05cbbe2c098d7d03d3eff7cd5602d57893fc866f23d77df7ea7494061b5288"
+      },
+      "fitNotes": "Organic overlap piece; bottom intentionally extends below ground. Not a watertight terrain tile, no automatic adjacency. Conservative collision.",
+      "limitations": [
+        "Static original geometry; no texture maps, rig or animation. Collision proxies are metadata only, not embedded physics bodies."
+      ],
+      "moduleMetadata": {
+        "coordinateSystem": "right-handed Y-up; +Z front; meters",
+        "gridMeters": 0.1,
+        "structuralBayMeters": 2,
+        "pivot": [
+          0,
+          0,
+          0
+        ],
+        "pivotDescription": "base center, except roof: center of complete roof support plane",
+        "allowedRotationYDegrees": [
+          0,
+          90,
+          180,
+          270
+        ],
+        "scalePolicy": "unit scale only",
+        "bounds": {
+          "min": [
+            -0.9655399918556213,
+            -0.30000001192092896,
+            -0.9303840398788452
+          ],
+          "max": [
+            0.976097583770752,
+            0.9000000357627869,
+            0.6529160141944885
+          ]
+        },
+        "dimensions": [
+          1.9416375756263733,
+          1.2000000476837158,
+          1.5833000540733337
+        ],
+        "sockets": [
+          {
+            "name": "ground",
+            "position": [
+              0,
+              0,
+              0
+            ],
+            "normal": [
+              0,
+              -1,
+              0
+            ],
+            "type": "terrain-seat",
+            "width": 2,
+            "height": 2
+          }
+        ],
+        "collisionProxies": [
+          {
+            "shape": "box",
+            "center": [
+              0,
+              0.3,
+              0
+            ],
+            "size": [
+              2.2,
+              1.3,
+              1.8
+            ],
+            "rotationYDegrees": 0
+          }
+        ],
+        "connectionPolicy": "Match socket type, dimensions, coincident positions and opposing normals; explicit adaptor required, not generic WFC ready."
+      },
+      "provenance": "项目原创场景模块，不是第三方开放许可角色。",
+      "reviewStatus": "首批候选 / 待美术签收"
+    },
+    {
+      "id": "prefab-pavilion",
+      "category": "prefab",
+      "name": "四柱翘檐亭 / small pavilion",
+      "author": "project-original",
+      "sourceUrl": null,
+      "license": "project-original",
+      "licenseUrl": null,
+      "model": "assets/prefab-pavilion.glb",
+      "preview": "previews/prefab-pavilion.webp",
+      "stats": {
+        "triangles": 15912,
+        "meshes": 15,
+        "bones": 0,
+        "animations": [],
+        "textures": 0,
+        "bytes": 273964,
+        "sha256": "b3eb62d27e19e37fd78b9ea916654a0a5b46ff404564f0ce10be746c62caf69f"
+      },
+      "fitNotes": "Exact instances and declared mating pairs in prefabs.json.",
+      "limitations": [
+        "Open pavilion, not a complete building grammar. Four beam corners overlap deliberately on shared capitals. Roof apex has four co-located seats but only one finial."
+      ],
+      "moduleMetadata": {
+        "coordinateSystem": "right-handed Y-up meters",
+        "gridMeters": 0.1,
+        "pivot": [
+          0,
+          0,
+          0
+        ],
+        "instances": [
+          {
+            "key": "floor",
+            "moduleId": "foundation-floor",
+            "translation": [
+              0,
+              0,
+              0
+            ],
+            "rotationYDegrees": 0,
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "key": "post-1_-1",
+            "moduleId": "pillar",
+            "translation": [
+              -1,
+              0.2,
+              -1
+            ],
+            "rotationYDegrees": 0,
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "key": "post-1_1",
+            "moduleId": "pillar",
+            "translation": [
+              -1,
+              0.2,
+              1
+            ],
+            "rotationYDegrees": 0,
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "key": "post1_-1",
+            "moduleId": "pillar",
+            "translation": [
+              1,
+              0.2,
+              -1
+            ],
+            "rotationYDegrees": 0,
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "key": "post1_1",
+            "moduleId": "pillar",
+            "translation": [
+              1,
+              0.2,
+              1
+            ],
+            "rotationYDegrees": 0,
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "key": "front",
+            "moduleId": "beam",
+            "translation": [
+              0,
+              2.6,
+              1
+            ],
+            "rotationYDegrees": 0,
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "key": "back",
+            "moduleId": "beam",
+            "translation": [
+              0,
+              2.6,
+              -1
+            ],
+            "rotationYDegrees": 0,
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "key": "left",
+            "moduleId": "beam",
+            "translation": [
+              -1,
+              2.6,
+              0
+            ],
+            "rotationYDegrees": 90,
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "key": "right",
+            "moduleId": "beam",
+            "translation": [
+              1,
+              2.6,
+              0
+            ],
+            "rotationYDegrees": 90,
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "key": "roof0",
+            "moduleId": "roof-section",
+            "translation": [
+              0,
+              2.8,
+              0
+            ],
+            "rotationYDegrees": 0,
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "key": "roof1",
+            "moduleId": "roof-section",
+            "translation": [
+              0,
+              2.8,
+              0
+            ],
+            "rotationYDegrees": 90,
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "key": "roof2",
+            "moduleId": "roof-section",
+            "translation": [
+              0,
+              2.8,
+              0
+            ],
+            "rotationYDegrees": 180,
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "key": "roof3",
+            "moduleId": "roof-section",
+            "translation": [
+              0,
+              2.8,
+              0
+            ],
+            "rotationYDegrees": 270,
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "key": "finial",
+            "moduleId": "roof-ridge-cap",
+            "translation": [
+              0,
+              3.7,
+              0
+            ],
+            "rotationYDegrees": 0,
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "key": "stairs",
+            "moduleId": "stair-segment",
+            "translation": [
+              0,
+              0,
+              1.3
+            ],
+            "rotationYDegrees": 0,
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        ],
+        "connections": [
+          {
+            "a": {
+              "instance": "floor",
+              "socket": "column--1--1"
+            },
+            "b": {
+              "instance": "post-1_-1",
+              "socket": "base"
+            }
+          },
+          {
+            "a": {
+              "instance": "floor",
+              "socket": "column--1-1"
+            },
+            "b": {
+              "instance": "post-1_1",
+              "socket": "base"
+            }
+          },
+          {
+            "a": {
+              "instance": "floor",
+              "socket": "column-1--1"
+            },
+            "b": {
+              "instance": "post1_-1",
+              "socket": "base"
+            }
+          },
+          {
+            "a": {
+              "instance": "floor",
+              "socket": "column-1-1"
+            },
+            "b": {
+              "instance": "post1_1",
+              "socket": "base"
+            }
+          },
+          {
+            "a": {
+              "instance": "front",
+              "socket": "roof"
+            },
+            "b": {
+              "instance": "roof0",
+              "socket": "support"
+            }
+          },
+          {
+            "a": {
+              "instance": "right",
+              "socket": "roof"
+            },
+            "b": {
+              "instance": "roof1",
+              "socket": "support"
+            }
+          },
+          {
+            "a": {
+              "instance": "back",
+              "socket": "roof"
+            },
+            "b": {
+              "instance": "roof2",
+              "socket": "support"
+            }
+          },
+          {
+            "a": {
+              "instance": "left",
+              "socket": "roof"
+            },
+            "b": {
+              "instance": "roof3",
+              "socket": "support"
+            }
+          },
+          {
+            "a": {
+              "instance": "roof0",
+              "socket": "apex"
+            },
+            "b": {
+              "instance": "finial",
+              "socket": "base"
+            }
+          },
+          {
+            "a": {
+              "instance": "floor",
+              "socket": "stairs"
+            },
+            "b": {
+              "instance": "stairs",
+              "socket": "top"
+            }
+          },
+          {
+            "a": {
+              "instance": "post-1_1",
+              "socket": "top"
+            },
+            "b": {
+              "instance": "front",
+              "socket": "left-seat"
+            }
+          },
+          {
+            "a": {
+              "instance": "post1_1",
+              "socket": "top"
+            },
+            "b": {
+              "instance": "front",
+              "socket": "right-seat"
+            }
+          },
+          {
+            "a": {
+              "instance": "post-1_-1",
+              "socket": "top"
+            },
+            "b": {
+              "instance": "back",
+              "socket": "left-seat"
+            }
+          },
+          {
+            "a": {
+              "instance": "post1_-1",
+              "socket": "top"
+            },
+            "b": {
+              "instance": "back",
+              "socket": "right-seat"
+            }
+          },
+          {
+            "a": {
+              "instance": "post-1_1",
+              "socket": "top"
+            },
+            "b": {
+              "instance": "left",
+              "socket": "left-seat"
+            }
+          },
+          {
+            "a": {
+              "instance": "post-1_-1",
+              "socket": "top"
+            },
+            "b": {
+              "instance": "left",
+              "socket": "right-seat"
+            }
+          },
+          {
+            "a": {
+              "instance": "post1_1",
+              "socket": "top"
+            },
+            "b": {
+              "instance": "right",
+              "socket": "left-seat"
+            }
+          },
+          {
+            "a": {
+              "instance": "post1_-1",
+              "socket": "top"
+            },
+            "b": {
+              "instance": "right",
+              "socket": "right-seat"
+            }
+          },
+          {
+            "a": {
+              "instance": "roof0",
+              "socket": "hip-right"
+            },
+            "b": {
+              "instance": "roof1",
+              "socket": "hip-left"
+            }
+          },
+          {
+            "a": {
+              "instance": "roof1",
+              "socket": "hip-right"
+            },
+            "b": {
+              "instance": "roof2",
+              "socket": "hip-left"
+            }
+          },
+          {
+            "a": {
+              "instance": "roof2",
+              "socket": "hip-right"
+            },
+            "b": {
+              "instance": "roof3",
+              "socket": "hip-left"
+            }
+          },
+          {
+            "a": {
+              "instance": "roof3",
+              "socket": "hip-right"
+            },
+            "b": {
+              "instance": "roof0",
+              "socket": "hip-left"
+            }
+          }
+        ],
+        "sockets": [],
+        "collisionPolicy": "Transform and aggregate child module proxies; no merged collider generated."
+      },
+      "provenance": "项目原创场景模块，不是第三方开放许可角色。",
+      "reviewStatus": "首批候选 / 待美术签收"
+    },
+    {
+      "id": "prefab-bridge",
+      "category": "prefab",
+      "name": "三跨木桥 / straight garden bridge",
+      "author": "project-original",
+      "sourceUrl": null,
+      "license": "project-original",
+      "licenseUrl": null,
+      "model": "assets/prefab-bridge.glb",
+      "preview": "previews/prefab-bridge.webp",
+      "stats": {
+        "triangles": 1152,
+        "meshes": 9,
+        "bones": 0,
+        "animations": [],
+        "textures": 0,
+        "bytes": 23804,
+        "sha256": "76a07f04fed83b45953705cf84498fd2d12ee67875088b4454509051e815225b"
+      },
+      "fitNotes": "Exact instances and declared mating pairs in prefabs.json.",
+      "limitations": [
+        "Flat 6m deck; no arches, piers or terrain included. Terminal posts are half-depth; repeated interior half-posts meet without duplicate overlap."
+      ],
+      "moduleMetadata": {
+        "coordinateSystem": "right-handed Y-up meters",
+        "gridMeters": 0.1,
+        "pivot": [
+          0,
+          0,
+          0
+        ],
+        "instances": [
+          {
+            "key": "deck0",
+            "moduleId": "bridge-deck",
+            "translation": [
+              0,
+              0,
+              0
+            ],
+            "rotationYDegrees": 0,
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "key": "railL0",
+            "moduleId": "bridge-rail",
+            "translation": [
+              -1,
+              0.2,
+              0
+            ],
+            "rotationYDegrees": 0,
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "key": "railR0",
+            "moduleId": "bridge-rail",
+            "translation": [
+              1,
+              0.2,
+              0
+            ],
+            "rotationYDegrees": 0,
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "key": "deck1",
+            "moduleId": "bridge-deck",
+            "translation": [
+              0,
+              0,
+              2
+            ],
+            "rotationYDegrees": 0,
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "key": "railL1",
+            "moduleId": "bridge-rail",
+            "translation": [
+              -1,
+              0.2,
+              2
+            ],
+            "rotationYDegrees": 0,
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "key": "railR1",
+            "moduleId": "bridge-rail",
+            "translation": [
+              1,
+              0.2,
+              2
+            ],
+            "rotationYDegrees": 0,
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "key": "deck2",
+            "moduleId": "bridge-deck",
+            "translation": [
+              0,
+              0,
+              4
+            ],
+            "rotationYDegrees": 0,
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "key": "railL2",
+            "moduleId": "bridge-rail",
+            "translation": [
+              -1,
+              0.2,
+              4
+            ],
+            "rotationYDegrees": 0,
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          },
+          {
+            "key": "railR2",
+            "moduleId": "bridge-rail",
+            "translation": [
+              1,
+              0.2,
+              4
+            ],
+            "rotationYDegrees": 0,
+            "scale": [
+              1,
+              1,
+              1
+            ]
+          }
+        ],
+        "connections": [
+          {
+            "a": {
+              "instance": "deck0",
+              "socket": "rail-left"
+            },
+            "b": {
+              "instance": "railL0",
+              "socket": "base"
+            }
+          },
+          {
+            "a": {
+              "instance": "deck0",
+              "socket": "rail-right"
+            },
+            "b": {
+              "instance": "railR0",
+              "socket": "base"
+            }
+          },
+          {
+            "a": {
+              "instance": "deck0",
+              "socket": "end"
+            },
+            "b": {
+              "instance": "deck1",
+              "socket": "start"
+            }
+          },
+          {
+            "a": {
+              "instance": "deck1",
+              "socket": "rail-left"
+            },
+            "b": {
+              "instance": "railL1",
+              "socket": "base"
+            }
+          },
+          {
+            "a": {
+              "instance": "railL0",
+              "socket": "end"
+            },
+            "b": {
+              "instance": "railL1",
+              "socket": "start"
+            }
+          },
+          {
+            "a": {
+              "instance": "deck1",
+              "socket": "rail-right"
+            },
+            "b": {
+              "instance": "railR1",
+              "socket": "base"
+            }
+          },
+          {
+            "a": {
+              "instance": "railR0",
+              "socket": "end"
+            },
+            "b": {
+              "instance": "railR1",
+              "socket": "start"
+            }
+          },
+          {
+            "a": {
+              "instance": "deck1",
+              "socket": "end"
+            },
+            "b": {
+              "instance": "deck2",
+              "socket": "start"
+            }
+          },
+          {
+            "a": {
+              "instance": "deck2",
+              "socket": "rail-left"
+            },
+            "b": {
+              "instance": "railL2",
+              "socket": "base"
+            }
+          },
+          {
+            "a": {
+              "instance": "railL1",
+              "socket": "end"
+            },
+            "b": {
+              "instance": "railL2",
+              "socket": "start"
+            }
+          },
+          {
+            "a": {
+              "instance": "deck2",
+              "socket": "rail-right"
+            },
+            "b": {
+              "instance": "railR2",
+              "socket": "base"
+            }
+          },
+          {
+            "a": {
+              "instance": "railR1",
+              "socket": "end"
+            },
+            "b": {
+              "instance": "railR2",
+              "socket": "start"
+            }
+          }
+        ],
+        "sockets": [],
+        "collisionPolicy": "Transform and aggregate child module proxies; no merged collider generated."
+      },
+      "provenance": "项目原创场景模块，不是第三方开放许可角色。",
+      "reviewStatus": "首批候选 / 待美术签收"
+    }
+  ],
+  "counts": {
+    "hero": 1,
+    "npc": 0,
+    "monster": 0,
+    "boss": 0,
+    "pet": 2,
+    "module": 12,
+    "prefab": 2
+  },
+  "gaps": [
+    "小怪缺2个、Boss缺2个：采集任务的公开API终端请求被执行授权拦截，未执行；未下载或核验任何合格模型。需恢复该操作授权后继续，不能换工具绕过拦截。",
+    {
+      "category": "npc",
+      "missingUsableCount": 2,
+      "reason": "目前取得的汉服女子和武僧都不是大头短身Q版，明确排除集成。另查到Little Hanfu Princess / Wuxia Warrior，但匿名public API仅给专有MESHY.AI预览，不提供可下载GLB；未逆向、绕过或生成替代。"
+    },
+    {
+      "category": "pet",
+      "missingUsableCount": 0,
+      "reason": "取得狐狸和猫两个可爱贴图候选；尚待用户造型确认和引擎动作验收。原兔子候选同样只有专有预览，无GLB。"
+    }
+  ],
+  "batches": [
+    "game-asset-library/acquisition/creatures/batch.json",
+    "game-asset-library/acquisition/npcs-pets/batch.json",
+    "game-asset-library/acquisition/environment/batch.json"
+  ]
+}
