@@ -20,6 +20,13 @@
         "animations": [
           "Armature|clip0|baselayer"
         ],
+        "animationTimings": [
+          {
+            "name": "Armature|clip0|baselayer",
+            "duration": 0.0,
+            "isStatic": true
+          }
+        ],
         "textures": 2,
         "bytes": 1516780,
         "sha256": "6b3d07eb7ac883accec7946f875feb0da6b28cdf779971181d922556538bf643"
@@ -30,7 +37,8 @@
         "No clearly visible sword",
         "Texture/geometry have AI-generated simplification",
         "Not an exclusive custom-designed character",
-        "Embedded animation clips exist but their playback/deformation quality needs engine review"
+        "Embedded animation clips exist but their playback/deformation quality needs engine review",
+        "文件中的动画片段均为零时长静态姿势，不是行走或战斗动作。"
       ],
       "moduleMetadata": null,
       "provenance": "Pre-existing publicly shared AI-generated Meshy 7 model, not self-modeled and not represented as hand-modeled.",
@@ -52,6 +60,13 @@
         "bones": 24,
         "animations": [
           "Armature|walking_man|baselayer"
+        ],
+        "animationTimings": [
+          {
+            "name": "Armature|walking_man|baselayer",
+            "duration": 1.0333333872258663,
+            "isStatic": false
+          }
         ],
         "textures": 2,
         "bytes": 7356552,
@@ -87,6 +102,13 @@
         "animations": [
           "Armature|walking_man|baselayer"
         ],
+        "animationTimings": [
+          {
+            "name": "Armature|walking_man|baselayer",
+            "duration": 1.0333333872258663,
+            "isStatic": false
+          }
+        ],
         "textures": 2,
         "bytes": 1249752,
         "sha256": "fbdfeb717d7dba8ad2277ce7ddfe9877cee71906c0536d54d10751ca19e05ad7"
@@ -119,6 +141,7 @@
         "meshes": 1,
         "bones": 0,
         "animations": [],
+        "animationTimings": [],
         "textures": 0,
         "bytes": 3472,
         "sha256": "0fa6eb3df4dae65dcb81573472add18030a395fbe9a93ccdb75b1e5b12484b87"
@@ -359,6 +382,7 @@
         "meshes": 1,
         "bones": 0,
         "animations": [],
+        "animationTimings": [],
         "textures": 0,
         "bytes": 7864,
         "sha256": "8fa93b8bbb045d40d852838e65592fcbf2639071402ff518af4f1f288abb24ae"
@@ -503,6 +527,7 @@
         "meshes": 1,
         "bones": 0,
         "animations": [],
+        "animationTimings": [],
         "textures": 0,
         "bytes": 16412,
         "sha256": "23984f411d1d33c8cf6b1fb6ba58503ee2f0400e19e897bd0113d032abb985a3"
@@ -647,6 +672,7 @@
         "meshes": 1,
         "bones": 0,
         "animations": [],
+        "animationTimings": [],
         "textures": 0,
         "bytes": 11052,
         "sha256": "7c00c144849f977dffe85bdb3d53bc516ffa16a821159a0f6a663f7350d6b19e"
@@ -819,6 +845,7 @@
         "meshes": 1,
         "bones": 0,
         "animations": [],
+        "animationTimings": [],
         "textures": 0,
         "bytes": 8620,
         "sha256": "90f59f9ead5aed18674795e32b782355ede169fbc918f72d4559ea269a8ac341"
@@ -931,6 +958,7 @@
         "meshes": 1,
         "bones": 0,
         "animations": [],
+        "animationTimings": [],
         "textures": 0,
         "bytes": 3568,
         "sha256": "50e1283d06bc0c2cd8dc8d4dba84875908dcf130de23cdc16f825a60c128e26d"
@@ -1059,6 +1087,7 @@
         "meshes": 1,
         "bones": 0,
         "animations": [],
+        "animationTimings": [],
         "textures": 0,
         "bytes": 242992,
         "sha256": "2dc74bd3dfe06fdef02768bb8c080701c4e9fbedf1a64c69f668134e52333405"
@@ -1203,6 +1232,7 @@
         "meshes": 1,
         "bones": 0,
         "animations": [],
+        "animationTimings": [],
         "textures": 0,
         "bytes": 14296,
         "sha256": "4cfd037bbd5531fd4c7a3ec59d837c548391591675a19ccce6097ca9a73aca67"
@@ -1299,6 +1329,7 @@
         "meshes": 1,
         "bones": 0,
         "animations": [],
+        "animationTimings": [],
         "textures": 0,
         "bytes": 3592,
         "sha256": "24b1201b4d25c525b61c9da59f36e898e608d89476fe5cd5f91048eb6970fbcb"
@@ -1425,6 +1456,7 @@
         "meshes": 1,
         "bones": 0,
         "animations": [],
+        "animationTimings": [],
         "textures": 0,
         "bytes": 13800,
         "sha256": "03f5153c6e76641a7ec4942d90224ee3734c9bef40e668252e80121277fd1c98"
@@ -1569,6 +1601,7 @@
         "meshes": 1,
         "bones": 0,
         "animations": [],
+        "animationTimings": [],
         "textures": 0,
         "bytes": 10276,
         "sha256": "ac2e24d47d958ca8959b53be5e513c32413ddcfb24d83e2499abcea2ec3e6a04"
@@ -1697,6 +1730,7 @@
         "meshes": 1,
         "bones": 0,
         "animations": [],
+        "animationTimings": [],
         "textures": 0,
         "bytes": 7364,
         "sha256": "4a05cbbe2c098d7d03d3eff7cd5602d57893fc866f23d77df7ea7494061b5288"
@@ -1793,6 +1827,7 @@
         "meshes": 15,
         "bones": 0,
         "animations": [],
+        "animationTimings": [],
         "textures": 0,
         "bytes": 273964,
         "sha256": "b3eb62d27e19e37fd78b9ea916654a0a5b46ff404564f0ce10be746c62caf69f"
@@ -2279,6 +2314,7 @@
         "meshes": 9,
         "bones": 0,
         "animations": [],
+        "animationTimings": [],
         "textures": 0,
         "bytes": 23804,
         "sha256": "76a07f04fed83b45953705cf84498fd2d12ee67875088b4454509051e815225b"
@@ -2567,6 +2603,9 @@
     "monster": 0,
     "boss": 0,
     "pet": 2,
+    "weapon": 0,
+    "treasure": 0,
+    "prop": 0,
     "module": 12,
     "prefab": 2
   },
@@ -2581,11 +2620,14 @@
       "category": "pet",
       "missingUsableCount": 0,
       "reason": "取得狐狸和猫两个可爱贴图候选；尚待用户造型确认和引擎动作验收。原兔子候选同样只有专有预览，无GLB。"
-    }
+    },
+    "Requested 12–20 distinct models not acquired; no monsters, bosses, pets, weapons, treasures or props verified.",
+    "License exact text, downloadable model links, original and runtime files, geometry/animation verification and contact sheet remain incomplete."
   ],
   "batches": [
     "game-asset-library/acquisition/creatures/batch.json",
     "game-asset-library/acquisition/npcs-pets/batch.json",
-    "game-asset-library/acquisition/environment/batch.json"
+    "game-asset-library/acquisition/environment/batch.json",
+    "game-asset-library/acquisition/cc0-expansion/batch.json"
   ]
 }
